@@ -15,6 +15,15 @@ import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
+        // used in testing of Api
+        if (args.length > 0 ) {
+            if (args.length != 2) {
+                System.out.println("java Api <port> <dataSource>");
+                System.exit(1);
+            }
+            // no checks here for args, we run this with args in testing
+            port(Integer.parseInt(args[0]));
+        }
         staticFileLocation("/public");
         // our master password, the worst security ever :)
         String masterPassword = "admin";

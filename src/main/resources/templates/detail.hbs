@@ -1,0 +1,54 @@
+{{#partial "content"}}
+    <section>
+        <div class="container">
+            <div class="entry-list single">
+                <article>
+                    <h1>{{ entry.title }}</h1>
+                    <time datetime={{ entry.htmlCreationDate }}>
+                        {{ entry.creationDateString }}
+                    </time>
+                    <div class="entry">
+                        <p>{{ entry.body }}</p>
+                        <p>
+                            <a class="link"
+                               href="/entries/edit/{{ entry.slug }}">
+                            Edit Entry</a>
+                        </p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+    <section class="entry-comments">
+        <div class="container">
+            <h2>Comments</h2>
+            {{#each comments}}
+                <div class="comment">
+                    <strong>{{ author }}</strong>
+                    <time datetime={{ htmlCreationDate }}>
+                        {{ creationDateString }}
+                    </time>
+                    <p>{{ body }}</p>
+                </div>
+            {{/each}}
+            <div class="new-comment">
+                <form method="post" name="/entries/detail/{{ entry.slug }}">
+                    <label for="name"> Name</label>
+                    <!--
+                        added required attribute, so that fields are not empty
+                    -->
+                    <input type="text" name="name" required><br>
+                    <label for="comment">Comment</label>
+                    <!--
+                        changed name attr to "body" for convenience
+                        added required attribute, so that fields are not empty
+                    -->
+                    <textarea rows="5" name="body" required></textarea>
+                    <input type="submit" value="Post Comment" class="button">
+                </form>
+            </div>
+        </div>
+    </section>
+{{/partial}}
+
+{{> base.hbs}}

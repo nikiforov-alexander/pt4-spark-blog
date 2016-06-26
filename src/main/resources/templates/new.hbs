@@ -1,0 +1,24 @@
+{{#partial "content"}}
+    <section>
+        <div class="container">
+            <div class="new-entry">
+                <h2>Publish New Entry</h2>
+                <form method="post" name="/entries/new">
+                    <label for="title"> Title</label>
+                    <!--
+                        added required as quick fix for this field to be non
+                        empty, so that we can create a slug, and web-page,
+                        associated with title
+                    -->
+                    <input type="text" name="title" required><br>
+                    <label for="entry">Entry</label>
+                    <!--changed name attr to "body" for convenience-->
+                    <textarea rows="5" name="body"></textarea>
+                    <input type="submit" value="Publish Entry" class="button">
+                    <a href="/" class="button button-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </section>
+{{/partial}}
+{{> base.hbs}}

@@ -43,6 +43,14 @@ public class BlogEntry {
             ioe.printStackTrace();
         }
     }
+    public void setSlugUsingTitleAndCreationDate() {
+        try {
+            Slugify slugify = new Slugify();
+            mSlug = slugify.slugify(mTitle + mCreationDate);
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+    }
 
 
     private Date mCreationDate;
@@ -71,7 +79,7 @@ public class BlogEntry {
         mTitle = title;
         mBody = body;
         mCreationDate = new Date();
-        setSlugUsingTitle();
+        setSlugUsingTitleAndCreationDate();
     }
     // constructor used in edit entry page, to save comments from old entry
     public BlogEntry(String title, String body, Set<Comment> comments) {
@@ -79,7 +87,7 @@ public class BlogEntry {
         mTitle = title;
         mBody = body;
         mCreationDate = new Date();
-        setSlugUsingTitle();
+        setSlugUsingTitleAndCreationDate();
         // now i hope here, that I shouldn't type mComments = new Set(comments)
         // because when we remove later on old blog entry
         mComments = comments;

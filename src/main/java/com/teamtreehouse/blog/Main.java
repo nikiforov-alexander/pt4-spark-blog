@@ -17,8 +17,8 @@ public class Main {
     public static void main(String[] args) {
         // used in testing of Api
         if (args.length > 0 ) {
-            if (args.length != 2) {
-                System.out.println("java Api <port> <dataSource>");
+            if (args.length != 1) {
+                System.out.println("java Api <port>");
                 System.exit(1);
             }
             // no checks here for args, we run this with args in testing
@@ -117,13 +117,14 @@ public class Main {
             BlogEntry newBlogEntry = new BlogEntry(newTitle, newBody);
             // if dao contains entry we replace old one with new
             if (!simpleBlogEntryDAO.containsEntry(newBlogEntry)) {
+                // save new title and entry
                 simpleBlogEntryDAO.addEntry(newBlogEntry);
             } else {
                 // TODO: set flash message, that it is impossible to create
                 // TODO: test what if new blog entry is already in dao
                 System.out.println("equal");
             }
-            // save new title and entry
+            response.status(201);
             response.redirect("/");
             return null;
         });

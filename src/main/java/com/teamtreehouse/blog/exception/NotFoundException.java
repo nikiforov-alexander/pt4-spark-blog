@@ -1,4 +1,4 @@
-package com.teamtreehouse.blog.model;
+package com.teamtreehouse.blog.exception;
 
 public class NotFoundException extends RuntimeException {
 }

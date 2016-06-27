@@ -4,6 +4,7 @@ import static spark.Spark.*;
 
 import com.teamtreehouse.blog.dao.SimpleBlogEntryDAO;
 import com.teamtreehouse.blog.exception.ApiError;
+import com.teamtreehouse.blog.exception.NotFoundException;
 import com.teamtreehouse.blog.model.BlogEntry;
 import com.teamtreehouse.blog.model.Comment;
 import com.teamtreehouse.blog.model.Date;
@@ -79,21 +80,35 @@ public class Main {
         }, new HandlebarsTemplateEngine());
 
         // entry detail page, get and post: see below, for comment
+        // ApiError is thrown when entry is not found by slug
         get("/entries/detail/:slug",(request, response) -> {
-            String blogEntrySlug = request.params("slug");
+            String slug = request.params("slug");
             // put entry and comments in detail page
             Map<String, Object> model = new HashMap<>();
-            BlogEntry blogEntry =
-                    simpleBlogEntryDAO.findEntryBySlug(blogEntrySlug);
+            // check for blog entry existence
+            BlogEntry blogEntry;
+            try {
+                blogEntry =
+                        simpleBlogEntryDAO.findEntryBySlug(slug);
+            } catch (NotFoundException nfe) {
+                throw new ApiError(404, "No such entry found");
+            }
             model.put("entry", blogEntry);
             model.put("comments", blogEntry.getComments());
             return new ModelAndView(model, "detail.hbs");
         }, new HandlebarsTemplateEngine());
         // create new comment on entries detail page
+        // ApiError is thrown when entry is not found by slug
         post("/entries/detail/:slug", (request, response) -> {
             // get old blog entry by slug
             String slug = request.params("slug");
-            BlogEntry blogEntry = simpleBlogEntryDAO.findEntryBySlug(slug);
+            // try to find blog entry
+            BlogEntry blogEntry;
+            try {
+                blogEntry = simpleBlogEntryDAO.findEntryBySlug(slug);
+            } catch (NotFoundException notFoundException) {
+                throw new ApiError(404, "No such entry found");
+            }
             // create new comment title(non-null, see new.hbs) and body
             String authorName = request.queryParams("name");
             String body = request.queryParams("body");
@@ -126,21 +141,37 @@ public class Main {
         });
 
         // entry edit page
+        // ApiError is thrown when entry is not found by slug
         get("/entries/edit/:slug",(request, response) -> {
-            String blogEntrySlug = request.params("slug");
+            // try to find entry by slug
+            String slug = request.params("slug");
+            BlogEntry blogEntry;
+            try {
+                blogEntry =
+                        simpleBlogEntryDAO.findEntryBySlug(slug);
+            } catch (NotFoundException nfe) {
+                throw new ApiError(404, "No such entry found");
+            }
+            // put found entry to model
             Map<String,Object> model = new HashMap<>();
-            BlogEntry blogEntry =
-                    simpleBlogEntryDAO.findEntryBySlug(blogEntrySlug);
             model.put("entry", blogEntry);
+            // return model and view
             return new ModelAndView(model, "edit.hbs");
         }, new HandlebarsTemplateEngine());
 
 
         // save entry post in edit.hbs
+        // ApiError is thrown when entry is not found by slug
         post("/entries/save/:slug", (request, response) -> {
             // get old blog entry by slug
             String slug = request.params("slug");
-            BlogEntry oldBlogEntry = simpleBlogEntryDAO.findEntryBySlug(slug);
+            BlogEntry oldBlogEntry;
+            try {
+                oldBlogEntry =
+                        simpleBlogEntryDAO.findEntryBySlug(slug);
+            } catch (NotFoundException nfe) {
+                throw new ApiError(404, "No such entry found");
+            }
             // create new blog entry with title(non-null, see new.hbs) and body
             String newTitle = request.queryParams("title");
             String newBody = request.queryParams("body");

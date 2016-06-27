@@ -86,7 +86,7 @@ public class BlogEntry {
     }
 
     // Blog entries will be equal if body and title are same, otherwise
-    // we change blog entry in edit/save page
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -94,19 +94,19 @@ public class BlogEntry {
 
         BlogEntry blogEntry = (BlogEntry) o;
 
-        if (mBody != null ? !mBody.equals(blogEntry.mBody) : blogEntry.mBody != null)
+        if (mTitle != null ? !mTitle.equals(blogEntry.mTitle) : blogEntry.mTitle != null)
             return false;
-        // title is non-null
-        return mTitle.equals(blogEntry.mTitle);
+        return mCreationDate != null ? mCreationDate.equals(blogEntry.mCreationDate) : blogEntry.mCreationDate == null;
 
     }
 
     @Override
     public int hashCode() {
-        int result = mBody != null ? mBody.hashCode() : 0;
-        result = 31 * result + mTitle.hashCode();
+        int result = mTitle != null ? mTitle.hashCode() : 0;
+        result = 31 * result + (mCreationDate != null ? mCreationDate.hashCode() : 0);
         return result;
     }
+    // we change blog entry in edit/save page
 
     // decided for title to be included in equals
 

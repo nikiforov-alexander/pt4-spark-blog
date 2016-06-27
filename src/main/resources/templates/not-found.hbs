@@ -1,10 +1,14 @@
 {{#partial "content"}}
-    <h1>What the?!!!</h1>
-    <p>We couldn't find what you were looking for...</p>
-{{/partial}}
-
-{{#partial "title"}}
-    Not found
+    <section>
+        <div class="container">
+            <div class="entry-list single">
+                <article>
+                    <h1>{{ status }}</h1>
+                    <p> {{ errorMessage }} </p>
+                </article>
+            </div>
+        </div>
+    </section>
 {{/partial}}
 
 {{> base.hbs}}

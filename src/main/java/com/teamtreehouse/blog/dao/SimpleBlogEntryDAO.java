@@ -1,7 +1,7 @@
 package com.teamtreehouse.blog.dao;
 
 import com.teamtreehouse.blog.model.BlogEntry;
-import com.teamtreehouse.blog.model.NotFoundException;
+import com.teamtreehouse.blog.exception.NotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;

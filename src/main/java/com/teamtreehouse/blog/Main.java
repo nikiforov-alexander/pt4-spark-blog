@@ -3,6 +3,7 @@ package com.teamtreehouse.blog;
 import static spark.Spark.*;
 
 import com.teamtreehouse.blog.dao.SimpleBlogEntryDAO;
+import com.teamtreehouse.blog.exception.ApiError;
 import com.teamtreehouse.blog.model.BlogEntry;
 import com.teamtreehouse.blog.model.Comment;
 import com.teamtreehouse.blog.model.Date;
@@ -12,6 +13,7 @@ import spark.template.handlebars.HandlebarsTemplateEngine;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 public class Main {
     public static void main(String[] args) {
@@ -79,13 +81,13 @@ public class Main {
         // entry detail page, get and post: see below, for comment
         get("/entries/detail/:slug",(request, response) -> {
             String blogEntrySlug = request.params("slug");
-                // put entry and comments in detail page
-                Map<String, Object> model = new HashMap<>();
-                BlogEntry blogEntry =
-                        simpleBlogEntryDAO.findEntryBySlug(blogEntrySlug);
-                model.put("entry", blogEntry);
-                model.put("comments", blogEntry.getComments());
-                return new ModelAndView(model, "detail.hbs");
+            // put entry and comments in detail page
+            Map<String, Object> model = new HashMap<>();
+            BlogEntry blogEntry =
+                    simpleBlogEntryDAO.findEntryBySlug(blogEntrySlug);
+            model.put("entry", blogEntry);
+            model.put("comments", blogEntry.getComments());
+            return new ModelAndView(model, "detail.hbs");
         }, new HandlebarsTemplateEngine());
         // create new comment on entries detail page
         post("/entries/detail/:slug", (request, response) -> {
@@ -115,15 +117,9 @@ public class Main {
             String newTitle = request.queryParams("title");
             String newBody = request.queryParams("body");
             BlogEntry newBlogEntry = new BlogEntry(newTitle, newBody);
-            // if dao contains entry we replace old one with new
-            if (!simpleBlogEntryDAO.containsEntry(newBlogEntry)) {
-                // save new title and entry
-                simpleBlogEntryDAO.addEntry(newBlogEntry);
-            } else {
-                // TODO: set flash message, that it is impossible to create
-                // TODO: test what if new blog entry is already in dao
-                System.out.println("equal");
-            }
+            // because our entries are unique (equals includes Date), no checks
+            // here
+            simpleBlogEntryDAO.addEntry(newBlogEntry);
             response.status(201);
             response.redirect("/");
             return null;
@@ -151,18 +147,28 @@ public class Main {
             BlogEntry newBlogEntry = new BlogEntry(newTitle,
                     newBody,
                     oldBlogEntry.getComments());
-            // if dao contains entry we replace old one with new
-            if (!simpleBlogEntryDAO.containsEntry(newBlogEntry)) {
-                simpleBlogEntryDAO.removeEntry(oldBlogEntry);
-                simpleBlogEntryDAO.addEntry(newBlogEntry);
-            } else {
-                // TODO: set flash message, that it is impossible to create
-                // TODO: test what if new blog entry is already in dao
-                System.out.println("equal");
-            }
+            // even if user didn't change anything, because he pushed edit,
+            // entry will have new creation date, the simplest way was, as I
+            // thought is to remove and add new entry to DAO
+            simpleBlogEntryDAO.removeEntry(oldBlogEntry);
+            simpleBlogEntryDAO.addEntry(newBlogEntry);
             // save new title and entry
             response.redirect("/");
             return null;
+        });
+
+        // all exceptions will be processed through this lambda
+        exception(ApiError.class, (exception, request, response) -> {
+            ApiError apiError = (ApiError) exception;
+            Map<String, Object> model = new HashMap<>();
+            model.put("status", apiError.getStatus());
+            model.put("errorMessage", apiError.getMessage());
+            response.status(apiError.getStatus());
+            HandlebarsTemplateEngine handlebarsTemplateEngine =
+                    new HandlebarsTemplateEngine();
+            String html = handlebarsTemplateEngine.render(
+                    new ModelAndView(model, "not-found.hbs"));
+            response.body(html);
         });
     }
 }

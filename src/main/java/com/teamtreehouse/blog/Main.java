@@ -6,6 +6,7 @@ import com.teamtreehouse.blog.dao.SimpleBlogEntryDAO;
 import com.teamtreehouse.blog.model.BlogEntry;
 import com.teamtreehouse.blog.model.Comment;
 import com.teamtreehouse.blog.model.Date;
+import spark.Filter;
 import spark.ModelAndView;
 import spark.template.handlebars.HandlebarsTemplateEngine;
 
@@ -15,9 +16,12 @@ import java.util.Map;
 public class Main {
     public static void main(String[] args) {
         staticFileLocation("/public");
+        // our master password, the worst security ever :)
         String masterPassword = "admin";
+        // dao
         SimpleBlogEntryDAO simpleBlogEntryDAO =
                 new SimpleBlogEntryDAO();
+        // test dao setup
         BlogEntry testBlogEntry = new BlogEntry("Title","Test body");
         simpleBlogEntryDAO.addEntry(testBlogEntry);
         Comment comment1 = new Comment("Comment1", new Date(1L), "John Doe");
@@ -25,18 +29,21 @@ public class Main {
         testBlogEntry.addComment(comment1);
         testBlogEntry.addComment(comment2);
         // redirect user to password page if cookie password is null, or
-        // set to anything other than master password
-        before((request, response) -> {
-            if (request.cookie("password") == null) {
-                response.redirect("/password");
-                halt();
-            } else {
-                if (!request.cookie("password").equals(masterPassword)) {
-                    response.redirect("/password");
-                    halt();
-                }
+        // set to anything other than master password. Session attribute is
+        // is set to remember page we were previously, so that if password is
+        // successful, we get back where we were
+        String[] protectedRoutes =
+                new String[] {"/entries/new", "/entries/edit/*"};
+        Filter filter = (request, response) -> {
+            request.session().attribute("protected-page",request.uri());
+            if (request.cookie("password") == null
+                    || !request.cookie("password").equals(masterPassword)) {
+               response.redirect("/password");
             }
-        });
+        };
+        for (String route: protectedRoutes) {
+            before(route,filter);
+        }
 
         // password page, get and post
         get("/password",(request, response) -> {
@@ -48,7 +55,7 @@ public class Main {
             String password = request.queryParams("password");
             // put password in cookie
             response.cookie("password",password);
-            response.redirect("/");
+            response.redirect(request.session().attribute("protected-page"));
             return null;
         });
 
@@ -147,6 +154,5 @@ public class Main {
             response.redirect("/");
             return null;
         });
-
     }
 }

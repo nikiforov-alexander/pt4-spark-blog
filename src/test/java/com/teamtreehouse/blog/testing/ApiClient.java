@@ -30,8 +30,7 @@ public class ApiClient {
             URL url = new URL(server + uri);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod(method);
-            // because we don't have json
-//            connection.setRequestProperty("Content-Type", "application/json");
+            // set cookie
             connection.setRequestProperty("Cookie",cookie);
             if (requestBody != null) {
                 connection.setDoOutput(true);

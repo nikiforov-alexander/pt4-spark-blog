@@ -34,12 +34,12 @@ public class Main {
         SimpleBlogEntryDAO simpleBlogEntryDAO =
                 new SimpleBlogEntryDAO();
         // test dao setup
-        BlogEntry testBlogEntry = new BlogEntry("Title","Test body");
-        simpleBlogEntryDAO.addEntry(testBlogEntry);
-        Comment comment1 = new Comment("Comment1", new Date(1L), "John Doe");
-        Comment comment2 = new Comment("Comment2", new Date(2L), "John Doe");
-        testBlogEntry.addComment(comment1);
-        testBlogEntry.addComment(comment2);
+//        BlogEntry testBlogEntry = new BlogEntry("Title","Test body");
+//        simpleBlogEntryDAO.addEntry(testBlogEntry);
+//        Comment comment1 = new Comment("Comment1", new Date(1L), "John Doe");
+//        Comment comment2 = new Comment("Comment2", new Date(2L), "John Doe");
+//        testBlogEntry.addComment(comment1);
+//        testBlogEntry.addComment(comment2);
         // redirect user to password page if cookie password is null, or
         // set to anything other than master password. Session attribute is
         // is set to remember page we were previously, so that if password is

@@ -16,16 +16,23 @@ public class ApiClient {
     }
 
     public ApiResponse request(String method, String uri) {
-        return request(method, uri, null);
+        return request(method, uri, null, "");
+    }
+    public ApiResponse request(String method, String uri, String requestBody) {
+        return request(method, uri, requestBody, "");
     }
 
-    public ApiResponse request(String method, String uri, String requestBody) {
+    public ApiResponse request(String method,
+                               String uri,
+                               String requestBody,
+                               String cookie) {
         try {
             URL url = new URL(server + uri);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod(method);
             // because we don't have json
 //            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setRequestProperty("Cookie",cookie);
             if (requestBody != null) {
                 connection.setDoOutput(true);
                 try (OutputStream os = connection.getOutputStream()) {

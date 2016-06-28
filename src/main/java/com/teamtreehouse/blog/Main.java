@@ -30,6 +30,8 @@ public class Main {
         staticFileLocation("/public");
         // our master password, the worst security ever :)
         String masterPassword = "admin";
+        // Not found message
+        String notFoundMessage = "No such entry found";
         // dao
         SimpleBlogEntryDAO simpleBlogEntryDAO =
                 new SimpleBlogEntryDAO();
@@ -91,7 +93,7 @@ public class Main {
                 blogEntry =
                         simpleBlogEntryDAO.findEntryBySlug(slug);
             } catch (NotFoundException nfe) {
-                throw new ApiError(404, "No such entry found");
+                throw new ApiError(404, notFoundMessage);
             }
             model.put("entry", blogEntry);
             model.put("comments", blogEntry.getComments());
@@ -107,7 +109,7 @@ public class Main {
             try {
                 blogEntry = simpleBlogEntryDAO.findEntryBySlug(slug);
             } catch (NotFoundException notFoundException) {
-                throw new ApiError(404, "No such entry found");
+                throw new ApiError(404, notFoundMessage);
             }
             // create new comment title(non-null, see new.hbs) and body
             String authorName = request.queryParams("name");
@@ -150,7 +152,7 @@ public class Main {
                 blogEntry =
                         simpleBlogEntryDAO.findEntryBySlug(slug);
             } catch (NotFoundException nfe) {
-                throw new ApiError(404, "No such entry found");
+                throw new ApiError(404, notFoundMessage);
             }
             // put found entry to model
             Map<String,Object> model = new HashMap<>();
@@ -170,7 +172,7 @@ public class Main {
                 oldBlogEntry =
                         simpleBlogEntryDAO.findEntryBySlug(slug);
             } catch (NotFoundException nfe) {
-                throw new ApiError(404, "No such entry found");
+                throw new ApiError(404, notFoundMessage);
             }
             // create new blog entry with title(non-null, see new.hbs) and body
             String newTitle = request.queryParams("title");

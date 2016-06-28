@@ -10,12 +10,17 @@ import spark.template.handlebars.HandlebarsTemplateEngine;
 
 import org.junit.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.junit.Assert.*;
 
 public class MainTest {
     public static final String PORT = "4568";
+    private static final String notFoundMessage = "No such entry found";
     private ApiClient mApiClient;
     private SimpleBlogEntryDAO mSimpleBlogEntryDAO;
+    private static final String mCookieWithPassword = "password=admin";
 
     @BeforeClass
     public static void startServer() {
@@ -58,11 +63,24 @@ public class MainTest {
         return handlebarsTemplateEngine
                 .render(new ModelAndView(null, hbsFileName));
     }
-    private String getHtmlOfUnathorisedRequestToPage(String pageUri) {
+    private String getHtmlOfUnAuthorisedRequestToPage(String pageUri) {
         ApiResponse apiResponse =
-                mApiClient.request("GET", "/entries/new");
+                mApiClient.request("GET", pageUri);
         return apiResponse.getBody();
     }
+    private String getHtmlOfAuthorisedRequestToPage(String pageUri) {
+        ApiResponse apiResponse =
+                mApiClient.request("GET", pageUri, null, mCookieWithPassword);
+        return apiResponse.getBody();
+    }
+    private String getHtmlOfPageWithHbsWithModel(String hbsFileName,
+                                                 Map<?,?> model) {
+        HandlebarsTemplateEngine handlebarsTemplateEngine =
+                new HandlebarsTemplateEngine();
+        return handlebarsTemplateEngine
+                .render(new ModelAndView(model, hbsFileName));
+    }
+//    throw new ApiError(404, "No such entry found");
 
     @Test
     public void unauthorisedRequestOnNewEntryPageRedirectsToPasswordPage()
@@ -72,17 +90,42 @@ public class MainTest {
         // password html page should come as a response
         assertEquals(
                 getHtmlOfPageWithHbsWithNullModel("password.hbs"),
-                getHtmlOfUnathorisedRequestToPage("/entries/new"));
+                getHtmlOfUnAuthorisedRequestToPage("/entries/new"));
     }
     @Test
     public void unauthorisedRequestOnEditEntryPageRedirectsToPasswordPage()
             throws Exception {
         // Given no cookies with password
-        // When get to new entries page
+        // When get request to edit entries page is made
         // Then password html page should come as a response, even if there are
         // no such entry
         assertEquals(
                 getHtmlOfPageWithHbsWithNullModel("password.hbs"),
-                getHtmlOfUnathorisedRequestToPage("/entries/edit/somePage"));
+                getHtmlOfUnAuthorisedRequestToPage("/entries/edit/somePage"));
+    }
+
+    @Test
+    public void authorizedRequestOnNewEntryPageShowsNewPage() throws Exception {
+        // Given cookie with password
+        // When get request to new entry page is made
+        // Then new entry page is returned
+        assertEquals(
+                getHtmlOfPageWithHbsWithNullModel("new.hbs"),
+                getHtmlOfAuthorisedRequestToPage("/entries/new"));
+    }
+
+    @Test
+    public void authorizedRequestOnEditEntryPageWithNoEntriesShowsNotFoundPage()
+            throws Exception {
+        // Given cookie with password and empty DAO with no entries
+        // model:
+        Map<String, Object> model = new HashMap<>();
+        model.put("status", 404);
+        model.put("errorMessage", notFoundMessage);
+        // When get request to edit entry page is made
+        // Then not-found error page is returned
+        assertEquals(
+                getHtmlOfPageWithHbsWithModel("not-found.hbs", model),
+                getHtmlOfAuthorisedRequestToPage("/entries/edit/someEntry"));
     }
 }

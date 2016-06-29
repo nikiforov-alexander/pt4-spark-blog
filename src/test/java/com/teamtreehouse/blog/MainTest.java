@@ -1,6 +1,5 @@
 package com.teamtreehouse.blog;
 
-import com.teamtreehouse.blog.dao.SimpleBlogEntryDAO;
 import com.teamtreehouse.blog.testing.ApiClient;
 import com.teamtreehouse.blog.testing.ApiResponse;
 import org.junit.*;

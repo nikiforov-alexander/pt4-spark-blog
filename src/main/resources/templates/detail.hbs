@@ -11,7 +11,7 @@
                         <p>{{ entry.body }}</p>
                         <p>
                             <a class="link"
-                               href="/entries/edit/{{ entry.slug }}">
+                               href="/entries/edit/{{ entry.hashId }}/{{ entry.slugFromTitle }}">
                             Edit Entry</a>
                         </p>
                     </div>
@@ -32,7 +32,7 @@
                 </div>
             {{/each}}
             <div class="new-comment">
-                <form method="post" name="/entries/detail/{{ entry.slug }}">
+                <form method="post" name="/entries/detail/{{ entry.hashId }}/{{ entry.slugFromTitle }}">
                     <label for="name"> Name</label>
                     <!--
                         added required attribute, so that fields are not empty

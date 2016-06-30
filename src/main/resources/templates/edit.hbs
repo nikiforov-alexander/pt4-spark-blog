@@ -3,7 +3,8 @@
         <div class="container">
             <div class="edit-entry">
                 <h2>Edit Entry</h2>
-                <form action="/entries/save/{{ entry.slug }}" method="post">
+                <form action="/entries/save/{{ entry.hashId }}/{{ entry.slugFromTitle }}"
+                      method="post">
                     <label for="title">Title</label>
                     <!--Added required so that title can't be empty-->
                     <input type="text" name="title" value="{{ entry.title }}" required><br>
@@ -11,7 +12,8 @@
                     <!--changed name attr to "body" for convenience-->
                     <textarea rows="5" name="body">{{ entry.body }}</textarea>
                     <input type="submit" value="Save Entry" class="button">
-                    <a href="/entries/detail/{{ entry.slug }}" class="button button-secondary">Cancel</a>
+                    <a href="/entries/detail/{{ entry.hashId }}/{{ entry.slugFromTitle }}"
+                       class="button button-secondary">Cancel</a>
                 </form>
             </div>
         </div>

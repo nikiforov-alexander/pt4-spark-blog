@@ -3,6 +3,9 @@ package com.teamtreehouse.blog;
 import com.teamtreehouse.blog.testing.ApiClient;
 import com.teamtreehouse.blog.testing.ApiResponse;
 import org.junit.*;
+import org.junit.rules.TestRule;
+import org.junit.rules.TestWatcher;
+import org.junit.runner.Description;
 import spark.ModelAndView;
 import spark.Spark;
 import spark.template.handlebars.HandlebarsTemplateEngine;
@@ -20,6 +23,13 @@ public class MainTest {
     private ApiClient mApiClient;
     private static final String mCookieWithPassword = "password=admin";
 
+    @Rule
+    public TestRule watcher = new TestWatcher() {
+        protected void starting(Description description) {
+            System.out.printf("%n -------- Starting test: %s %n",description.getMethodName());
+        }
+    };
+
     @BeforeClass
     public static void startServer() {
         String[] args = {PORT};
@@ -35,16 +45,16 @@ public class MainTest {
         mApiClient = new ApiClient("http://localhost:" + PORT);
     }
 
-    @Test
-    public void emptyDaoPageIsTheSameAsModeled() throws Exception {
-        HandlebarsTemplateEngine handlebarsTemplateEngine =
-                new HandlebarsTemplateEngine();
-        String indexHtml = handlebarsTemplateEngine
-                .render(new ModelAndView(null, "index.hbs"));
-        ApiResponse apiResponse =
-                mApiClient.request("GET", "/");
-        assertEquals(indexHtml, apiResponse.getBody());
-    }
+//    @Test
+//    public void emptyDaoPageIsTheSameAsModeled() throws Exception {
+//        HandlebarsTemplateEngine handlebarsTemplateEngine =
+//                new HandlebarsTemplateEngine();
+//        String indexHtml = handlebarsTemplateEngine
+//                .render(new ModelAndView(null, "index.hbs"));
+//        ApiResponse apiResponse =
+//                mApiClient.request("GET", "/");
+//        assertEquals(indexHtml, apiResponse.getBody());
+//    }
 
     private String getHtmlOfPageWithHbsWithNullModel(String hbsFileName) {
         HandlebarsTemplateEngine handlebarsTemplateEngine =
@@ -116,4 +126,15 @@ public class MainTest {
                 getHtmlOfPageWithHbsWithModel("not-found.hbs", model),
                 getHtmlOfAuthorisedRequestToPage("/entries/edit/someEntry"));
     }
+//
+//    @Test
+//    public void addingNewEntryWithPostWorks() throws Exception {
+//        getHtmlOfPageWithHbsWithNullModel("new.hbs");
+//        ApiResponse apiResponse =
+//                mApiClient.request("POST",
+//                        "/entries/new",
+//                        "title=title&body=body",
+//                        mCookieWithPassword);
+//        System.out.println(apiResponse.getBody());
+//    }
 }

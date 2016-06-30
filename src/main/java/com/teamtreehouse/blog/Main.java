@@ -36,12 +36,12 @@ public class Main {
         SimpleBlogEntryDAO simpleBlogEntryDAO =
                 new SimpleBlogEntryDAO();
         // test dao setup
-//        BlogEntry testBlogEntry = new BlogEntry("Title","Test body");
-//        simpleBlogEntryDAO.addEntry(testBlogEntry);
-//        Comment comment1 = new Comment("Comment1", new Date(1L), "John Doe");
-//        Comment comment2 = new Comment("Comment2", new Date(2L), "John Doe");
-//        testBlogEntry.addComment(comment1);
-//        testBlogEntry.addComment(comment2);
+        BlogEntry testBlogEntry = new BlogEntry("Title","Test body");
+        simpleBlogEntryDAO.addEntry(testBlogEntry);
+        Comment comment1 = new Comment("Comment1", new Date(1L), "John Doe");
+        Comment comment2 = new Comment("Comment2", new Date(2L), "John Doe");
+        testBlogEntry.addComment(comment1);
+        testBlogEntry.addComment(comment2);
         // redirect user to password page if cookie password is null, or
         // set to anything other than master password. Session attribute is
         // is set to remember page we were previously, so that if password is
@@ -83,15 +83,16 @@ public class Main {
 
         // entry detail page, get and post: see below, for comment
         // ApiError is thrown when entry is not found by slug
-        get("/entries/detail/:slug",(request, response) -> {
-            String slug = request.params("slug");
+        get("/entries/detail/:hashId/:slugFromTitle",(request, response) -> {
+            String hashId = request.params("hashId");
+            String slugFromTitle = request.params("slugFromTitle");
             // put entry and comments in detail page
             Map<String, Object> model = new HashMap<>();
             // check for blog entry existence
             BlogEntry blogEntry;
             try {
                 blogEntry =
-                        simpleBlogEntryDAO.findEntryBySlug(slug);
+                        simpleBlogEntryDAO.findEntryBySlug(hashId);
             } catch (NotFoundException nfe) {
                 throw new ApiError(404, notFoundMessage);
             }

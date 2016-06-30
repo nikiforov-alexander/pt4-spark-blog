@@ -101,13 +101,14 @@ public class Main {
         }, new HandlebarsTemplateEngine());
         // create new comment on entries detail page
         // ApiError is thrown when entry is not found by slug
-        post("/entries/detail/:slug", (request, response) -> {
+        post("/entries/detail/:hashId/:slugFromTitle", (request, response) -> {
             // get old blog entry by slug
-            String slug = request.params("slug");
+            String hashId = request.params("hashId");
+            String slugFromTitle = request.params("slugFromTitle");
             // try to find blog entry
             BlogEntry blogEntry;
             try {
-                blogEntry = simpleBlogEntryDAO.findEntryBySlug(slug);
+                blogEntry = simpleBlogEntryDAO.findEntryBySlug(hashId);
             } catch (NotFoundException notFoundException) {
                 throw new ApiError(404, notFoundMessage);
             }
@@ -120,7 +121,8 @@ public class Main {
             // we scenario, so just add comment, no check
             blogEntry.addComment(comment);
             // redirect back to entry detail page
-            response.redirect("/entries/detail/" + slug);
+            response.redirect("/entries/detail/" + hashId +
+                    "/" + slugFromTitle);
             return null;
         });
 

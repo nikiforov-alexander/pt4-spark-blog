@@ -146,13 +146,14 @@ public class Main {
 
         // entry edit page
         // ApiError is thrown when entry is not found by slug
-        get("/entries/edit/:slug",(request, response) -> {
+        get("/entries/edit/:hashId/:slugFromTitle",(request, response) -> {
             // try to find entry by slug
-            String slug = request.params("slug");
+            String hashId = request.params("hashId");
+            String slugFromTitle = request.params("slugFromTitle");
             BlogEntry blogEntry;
             try {
                 blogEntry =
-                        simpleBlogEntryDAO.findEntryBySlug(slug);
+                        simpleBlogEntryDAO.findEntryBySlug(hashId);
             } catch (NotFoundException nfe) {
                 throw new ApiError(404, notFoundMessage);
             }

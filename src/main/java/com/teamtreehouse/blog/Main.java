@@ -167,13 +167,14 @@ public class Main {
 
         // save entry post in edit.hbs
         // ApiError is thrown when entry is not found by slug
-        post("/entries/save/:slug", (request, response) -> {
+        post("/entries/save/:hashId/:slugFromTitle", (request, response) -> {
+            String hashId = request.params("hashId");
+            String slugFromTitle = request.params("slugFromTitle");
             // get old blog entry by slug
-            String slug = request.params("slug");
             BlogEntry oldBlogEntry;
             try {
                 oldBlogEntry =
-                        simpleBlogEntryDAO.findEntryBySlug(slug);
+                        simpleBlogEntryDAO.findEntryBySlug(hashId);
             } catch (NotFoundException nfe) {
                 throw new ApiError(404, notFoundMessage);
             }

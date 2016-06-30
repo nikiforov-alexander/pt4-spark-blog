@@ -5,7 +5,7 @@
                 {{#each entries}}
                     <article>
                         <h2>
-                            <a href="/entries/detail/{{ slug }}">{{ title }}</a>
+                            <a href="/entries/detail/{{ hashId }}/{{ slugFromTitle }}">{{ title }}</a>
                         </h2>
                         <time datetime="{{ htmlCreationDate }}">
                             {{ creationDateString }}

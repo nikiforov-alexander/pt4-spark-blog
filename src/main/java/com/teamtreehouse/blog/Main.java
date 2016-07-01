@@ -84,7 +84,6 @@ public class Main {
         // ApiError is thrown when entry is not found by slug
         get("/entries/detail/:hashId/:slugFromTitle",(request, response) -> {
             String hashId = request.params("hashId");
-            String slugFromTitle = request.params("slugFromTitle");
             // put entry and comments in detail page
             Map<String, Object> model = new HashMap<>();
             // check for blog entry existence
@@ -149,7 +148,6 @@ public class Main {
         get("/entries/edit/:hashId/:slugFromTitle",(request, response) -> {
             // try to find entry by slug
             String hashId = request.params("hashId");
-            String slugFromTitle = request.params("slugFromTitle");
             BlogEntry blogEntry;
             try {
                 blogEntry =
@@ -169,7 +167,6 @@ public class Main {
         // ApiError is thrown when entry is not found by slug
         post("/entries/save/:hashId/:slugFromTitle", (request, response) -> {
             String hashId = request.params("hashId");
-            String slugFromTitle = request.params("slugFromTitle");
             // get old blog entry by slug
             BlogEntry oldBlogEntry;
             try {

@@ -1,5 +1,6 @@
 package com.teamtreehouse.blog;
 
+import com.teamtreehouse.blog.model.BlogEntry;
 import com.teamtreehouse.blog.testing.ApiClient;
 import com.teamtreehouse.blog.testing.ApiResponse;
 import org.junit.*;
@@ -30,6 +31,7 @@ public class MainTest {
             System.out.printf("%n -------- Starting test: %s %n",description.getMethodName());
         }
     };
+    private final String mRightPassword = "admin";
 
     @BeforeClass
     public static void startServer() {
@@ -184,7 +186,8 @@ public class MainTest {
     public void givingWrongPasswordRedirectsBackToHomePageWhenSessionIsNew()
             throws Exception {
         // Given no cookies with password, and new empty session
-        // When user tries type wrong password
+        // When user tries type wrong password, ( same will happen when
+        // password  is right )
         // Then home page is returned back
         Map<String, Object> model = new HashMap<>();
         model.put("entries", Main.mSimpleBlogEntryDAO.findAllEntries());
@@ -194,5 +197,44 @@ public class MainTest {
                         "/password","password=password"));
     }
 
+//    // test doesn't work because session is not saved, apparently we
+//    // have to use WebSocket maybe ... ?
+//    @Test
+//    public void givingRightPasswordRedirectsBackToPageWhereHeAskedFor()
+//            throws Exception {
+//        // Given no cookies with password, and session with new page
+//        // set after get request sent to page with new entries
+//        mApiClient.request("GET", "/entries/new");
+//        // When user tries type right password, making POST request at
+//        // password page
+//        // Then home page is returned back
+//        assertEquals(
+//                getHtmlOfPageWithHbsWithNullModel("new.hbs"),
+//                getResponseBodyOfPostRequestWithoutPasswordCookie(
+//                        "/password","password=" + mRightPassword));
+//    }
 
+
+    @Test
+    public void detailPageReturnedRightAsWeExpected() throws Exception {
+        // Given no cookies with password, no sessions
+        BlogEntry firstBlogEntry =
+                Main.mSimpleBlogEntryDAO.findAllEntries().get(0);
+        HashMap<String, Object> model = new HashMap<>();
+        model.put("entry", firstBlogEntry);
+        model.put("comments", firstBlogEntry.getComments());
+        // When we make GET request to detail page of first test Entry
+        String requestBodyOfGetRequestToDetailPage =
+                getResponseBodyOfGetRequestWithRightPasswordCookie(
+                        "/entries/detail/"
+                        + firstBlogEntry.getHashId() + "/"
+                        + firstBlogEntry.getSlugFromTitle()
+                );
+        // Then body of detail page modeled offline using handlebars
+        // should be equal to response body of actual detail page
+        assertEquals(
+                getHtmlOfPageWithHbsWithModel("detail.hbs", model),
+                requestBodyOfGetRequestToDetailPage
+        );
+    }
 }

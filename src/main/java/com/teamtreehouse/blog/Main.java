@@ -89,7 +89,14 @@ public class Main {
             String password = request.queryParams("password");
             // put password in cookie
             response.cookie("password",password);
-            response.redirect(request.session().attribute("protected-page"));
+            // if session is new, we redirect back to home page, may be not the
+            // best solution, but not 500 internal error, else redirect to
+            // page from where password-required action was made, see filters
+            if (request.session().isNew()) {
+                response.redirect("/");
+            } else {
+                response.redirect(request.session().attribute("protected-page"));
+            }
             return null;
         });
 

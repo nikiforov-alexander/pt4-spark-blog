@@ -34,6 +34,7 @@ public class MainTest {
     public static void startServer() {
         String[] args = {PORT};
         Main.main(args);
+        Spark.awaitInitialization();
     }
     @AfterClass
     public static void stopServer() {

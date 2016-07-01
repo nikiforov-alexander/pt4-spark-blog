@@ -256,4 +256,32 @@ public class MainTest {
         );
 
     }
+    @Test
+    public void postToEntriesDetailsExistingPageTryingToCreateCommentReturnsDetailPageWithNewComment()
+            throws Exception {
+        // Given no cookies with password, no sessions, dao with three
+        // test entries
+        // When we make POST request to page with address that doesn't exist
+        BlogEntry firstBlogEntry =
+            Main.mSimpleBlogEntryDAO.findAllEntries().get(0);
+        ApiResponse apiResponse =
+                mApiClient.request("POST",
+                        "/entries/detail/"
+                        + firstBlogEntry.getHashId() +
+                        "/" + firstBlogEntry.getSlugFromTitle(),
+                        "name=name&body=body");
+        firstBlogEntry =
+                Main.mSimpleBlogEntryDAO.findAllEntries().get(0);
+        HashMap<String, Object> model = new HashMap<>();
+        model.put("entry", firstBlogEntry);
+        model.put("comments", firstBlogEntry.getComments());
+        // Then body of response of this request should be equal to
+        // modeled offline with handlebars page of detail entry with
+        // new comment
+        assertEquals(
+                getHtmlOfPageWithHbsWithModel("detail.hbs", model),
+                apiResponse.getBody()
+        );
+
+    }
 }

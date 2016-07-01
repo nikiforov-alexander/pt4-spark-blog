@@ -237,4 +237,23 @@ public class MainTest {
                 requestBodyOfGetRequestToDetailPage
         );
     }
+
+    @Test
+    public void postToEntriesDetailsPageThatDoesNotExistsReturnsNotFoundPage()
+            throws Exception {
+        // Given no cookies with password, no sessions, dao with three
+        // test entries
+        // When we make POST request to page with address that doesn't exist
+        ApiResponse apiResponse =
+                mApiClient.request("POST",
+                        "/entries/detail/12442341/title",
+                        "title=title&body=body");
+        // Then body of response of this request should be equal to 404
+        // modeled offline with handlebars page
+        assertEquals(
+                getHtmlOfPageWithHbsWithModel("not-found.hbs", mErrorPageModel),
+                apiResponse.getBody()
+        );
+
+    }
 }

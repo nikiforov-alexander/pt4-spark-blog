@@ -16,6 +16,31 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Main {
+    protected static SimpleBlogEntryDAO mSimpleBlogEntryDAO;
+
+    private static BlogEntry createTestBlogEntryWithComments(
+            String blogTitle,
+            String blogBody,
+            String CommentName,
+            Date CommentDate,
+            String CommentAuthor) {
+        BlogEntry testBlogEntry = new BlogEntry(blogTitle, blogBody);
+        Comment comment = new Comment(CommentName, CommentDate, CommentAuthor);
+        testBlogEntry.addComment(comment);
+        return testBlogEntry;
+    }
+    protected static void fillDaoWithThreeTestEntries() {
+        mSimpleBlogEntryDAO.addEntry(createTestBlogEntryWithComments(
+               "Title1", "Body1", "Comment1", new Date(1L), "Author1"
+        ));
+        mSimpleBlogEntryDAO.addEntry(createTestBlogEntryWithComments(
+                "Title2", "Body2", "Comment2", new Date(2L), "Author2"
+        ));
+        mSimpleBlogEntryDAO.addEntry(createTestBlogEntryWithComments(
+                "Title3", "Body3", "Comment3", new Date(3L), "Author3"
+        ));
+    }
+
     public static void main(String[] args) {
         // used in testing of Api
         if (args.length > 0 ) {
@@ -31,16 +56,12 @@ public class Main {
         String masterPassword = "admin";
         // Not found message
         String notFoundMessage = "No such entry found";
-        // dao
-        SimpleBlogEntryDAO simpleBlogEntryDAO =
-                new SimpleBlogEntryDAO();
+        // I also use external static dao for testing, it is not the best way
+        // I know, but in the absence of database I see no other way
+        mSimpleBlogEntryDAO = new SimpleBlogEntryDAO();
+        fillDaoWithThreeTestEntries();
+        SimpleBlogEntryDAO simpleBlogEntryDAO = mSimpleBlogEntryDAO;
         // test dao setup
-        BlogEntry testBlogEntry = new BlogEntry("Title","Test body");
-        simpleBlogEntryDAO.addEntry(testBlogEntry);
-        Comment comment1 = new Comment("Comment1", new Date(1L), "John Doe");
-        Comment comment2 = new Comment("Comment2", new Date(2L), "John Doe");
-        testBlogEntry.addComment(comment1);
-        testBlogEntry.addComment(comment2);
         // redirect user to password page if cookie password is null, or
         // set to anything other than master password. Session attribute is
         // is set to remember page we were previously, so that if password is

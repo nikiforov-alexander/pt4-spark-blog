@@ -125,17 +125,30 @@ public class MainTest {
         // Then not-found error page is returned
         assertEquals(
                 getHtmlOfPageWithHbsWithModel("not-found.hbs", model),
-                getHtmlOfAuthorisedRequestToPage("/entries/edit/someEntry"));
+                getHtmlOfAuthorisedRequestToPage("/entries/edit/1234543/title"));
     }
-//
-//    @Test
-//    public void addingNewEntryWithPostWorks() throws Exception {
-//        getHtmlOfPageWithHbsWithNullModel("new.hbs");
-//        ApiResponse apiResponse =
-//                mApiClient.request("POST",
-//                        "/entries/new",
-//                        "title=title&body=body",
-//                        mCookieWithPassword);
-//        System.out.println(apiResponse.getBody());
-//    }
+
+    // Not quite right test, but I will still include it
+    @Test
+    public void addingNewEntryWithPostRequestReturnsRightResponseHomePageWithNewEntry()
+            throws Exception {
+        // Given initial DAO with 3 test entries, model of html created by
+        // handlebars template engine, with all entries from POST request
+
+        // When POST request to new page is made, and new DAO is used to
+        // create index page
+        ApiResponse apiResponse =
+                mApiClient.request("POST",
+                        "/entries/new",
+                        "title=title&body=body",
+                        mCookieWithPassword);
+        Map<String, Object> model = new HashMap<>();
+        model.put("entries", Main.mSimpleBlogEntryDAO.findAllEntries());
+        // then body of response should be same as of index page with simple
+        // blog entry dao given
+        assertEquals(
+                getHtmlOfPageWithHbsWithModel("index.hbs", model),
+                apiResponse.getBody()
+        );
+    }
 }

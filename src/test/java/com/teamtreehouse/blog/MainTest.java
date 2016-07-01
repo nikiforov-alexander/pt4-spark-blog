@@ -46,32 +46,14 @@ public class MainTest {
         mApiClient = new ApiClient("http://localhost:" + PORT);
     }
 
-//    @Test
-//    public void emptyDaoPageIsTheSameAsModeled() throws Exception {
-//        HandlebarsTemplateEngine handlebarsTemplateEngine =
-//                new HandlebarsTemplateEngine();
-//        String indexHtml = handlebarsTemplateEngine
-//                .render(new ModelAndView(null, "index.hbs"));
-//        ApiResponse apiResponse =
-//                mApiClient.request("GET", "/");
-//        assertEquals(indexHtml, apiResponse.getBody());
-//    }
-
+    // methods to get html page as a string giving a .hbs file name and model
+    // to put, null or filled
+    // @return String - rendered html with Handlebars template engine
     private String getHtmlOfPageWithHbsWithNullModel(String hbsFileName) {
         HandlebarsTemplateEngine handlebarsTemplateEngine =
                 new HandlebarsTemplateEngine();
         return handlebarsTemplateEngine
                 .render(new ModelAndView(null, hbsFileName));
-    }
-    private String getHtmlOfUnAuthorisedRequestToPage(String pageUri) {
-        ApiResponse apiResponse =
-                mApiClient.request("GET", pageUri);
-        return apiResponse.getBody();
-    }
-    private String getHtmlOfAuthorisedRequestToPage(String pageUri) {
-        ApiResponse apiResponse =
-                mApiClient.request("GET", pageUri, null, mCookieWithPassword);
-        return apiResponse.getBody();
     }
     private String getHtmlOfPageWithHbsWithModel(String hbsFileName,
                                                  Map<?,?> model) {
@@ -79,6 +61,38 @@ public class MainTest {
                 new HandlebarsTemplateEngine();
         return handlebarsTemplateEngine
                 .render(new ModelAndView(model, hbsFileName));
+    }
+    // methods to get response body of GET request to given URI with or without
+    // password cookie
+    // @return String - body of response
+    private String
+        getResponseBodyOfGetRequestWithoutPasswordCookie(String pageUri) {
+        return mApiClient
+                .request("GET", pageUri)
+                .getBody();
+    }
+    private String
+        getResponseBodyOfGetRequestWithRightPasswordCookie(String pageUri) {
+        return mApiClient
+                .request("GET", pageUri, null, mCookieWithPassword)
+                .getBody();
+    }
+    // methods to get response body of POST request to given URI with or without
+    // password cookie
+    // @return String - body of response
+    private String
+        getResponseBodyOfPostRequestWithoutPasswordCookie(String pageUri,
+                                                          String requestBody) {
+        return mApiClient
+                .request("POST", pageUri, requestBody)
+                .getBody();
+    }
+    private String
+        getResponseBodyOfPostRequestWithRightPasswordCookie(
+            String pageUri, String requestBody) {
+        return mApiClient
+                .request("POST", pageUri, requestBody, mCookieWithPassword)
+                .getBody();
     }
 
     @Test
@@ -89,7 +103,7 @@ public class MainTest {
         // password html page should come as a response
         assertEquals(
                 getHtmlOfPageWithHbsWithNullModel("password.hbs"),
-                getHtmlOfUnAuthorisedRequestToPage("/entries/new"));
+                getResponseBodyOfGetRequestWithoutPasswordCookie("/entries/new"));
     }
     @Test
     public void unauthorisedRequestOnEditEntryPageRedirectsToPasswordPage()
@@ -100,7 +114,7 @@ public class MainTest {
         // no such entry
         assertEquals(
                 getHtmlOfPageWithHbsWithNullModel("password.hbs"),
-                getHtmlOfUnAuthorisedRequestToPage("/entries/edit/somePage"));
+                getResponseBodyOfGetRequestWithoutPasswordCookie("/entries/edit/somePage"));
     }
 
     @Test
@@ -110,7 +124,7 @@ public class MainTest {
         // Then new entry page is returned
         assertEquals(
                 getHtmlOfPageWithHbsWithNullModel("new.hbs"),
-                getHtmlOfAuthorisedRequestToPage("/entries/new"));
+                getResponseBodyOfGetRequestWithRightPasswordCookie("/entries/new"));
     }
 
     @Test
@@ -125,7 +139,7 @@ public class MainTest {
         // Then not-found error page is returned
         assertEquals(
                 getHtmlOfPageWithHbsWithModel("not-found.hbs", model),
-                getHtmlOfAuthorisedRequestToPage("/entries/edit/1234543/title"));
+                getResponseBodyOfGetRequestWithRightPasswordCookie("/entries/edit/1234543/title"));
     }
 
     // Not quite right test, but I will still include it
@@ -150,5 +164,19 @@ public class MainTest {
                 getHtmlOfPageWithHbsWithModel("index.hbs", model),
                 apiResponse.getBody()
         );
+    }
+
+    @Test
+    public void givingWrongPasswordRedirectsBackToHomePageWhenSessionIsNew()
+            throws Exception {
+        // Given no cookies with password, and new empty session
+        // When user tries type wrong password
+        // Then home page is returned back
+        Map<String, Object> model = new HashMap<>();
+        model.put("entries", Main.mSimpleBlogEntryDAO.findAllEntries());
+        assertEquals(
+                getHtmlOfPageWithHbsWithModel("index.hbs", model),
+                getResponseBodyOfPostRequestWithoutPasswordCookie(
+                        "/password","password=password"));
     }
 }

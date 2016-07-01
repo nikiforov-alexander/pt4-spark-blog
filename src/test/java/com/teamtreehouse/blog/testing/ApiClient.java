@@ -33,11 +33,6 @@ public class ApiClient {
             // set cookie
             connection.setRequestProperty("Cookie",cookie);
             if (requestBody != null) {
-                // added request properties for POST request, because
-                connection.setRequestProperty("Content-Type",
-                        "application/x-www-form-urlencoded");
-                connection.setRequestProperty("Content-Length",
-                        requestBody.getBytes().length + "");
                 connection.setDoOutput(true);
                 try (OutputStream os = connection.getOutputStream()) {
                     os.write(requestBody.getBytes("UTF-8"));

@@ -3,13 +3,13 @@ package com.teamtreehouse.blog.model;
 import com.github.slugify.Slugify;
 
 import java.io.IOException;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BlogEntry {
 
-    private Set<Comment> mComments;
-    public Set<Comment> getComments() {
+    private List<Comment> mComments;
+    public List<Comment> getComments() {
         return mComments;
     }
 
@@ -29,27 +29,20 @@ public class BlogEntry {
     public void setTitle(String title) {
         mTitle = title;
     }
-
-
-    private String mSlug;
-    public String getSlug() {
-        return mSlug;
-    }
-    public void setSlugUsingTitle() {
+    public String getSlugFromTitle() {
+        String slug = "";
         try {
             Slugify slugify = new Slugify();
-            mSlug = slugify.slugify(mTitle);
+            slug = slugify.slugify(mTitle);
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
+        return slug;
     }
-    public void setSlugUsingTitleAndCreationDate() {
-        try {
-            Slugify slugify = new Slugify();
-            mSlug = slugify.slugify(mTitle + mCreationDate);
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
+
+    private String mHashId;
+    public String getHashId() {
+        return mHashId;
     }
 
 
@@ -73,17 +66,26 @@ public class BlogEntry {
         return mComments.add(comment);
     }
 
+    // used in default constructor, generates unique hashId
+    private void setSlugUsingTitleAndCreationDate() {
+        try {
+            Slugify slugify = new Slugify();
+            mHashId = slugify.slugify(hashCode() + "");
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+    }
     // default constructor, used to create new blog entry without comments
     public BlogEntry(String title, String body) {
-        mComments = new TreeSet<>();
+        mComments = new ArrayList<>();
         mTitle = title;
         mBody = body;
         mCreationDate = new Date();
         setSlugUsingTitleAndCreationDate();
     }
     // constructor used in edit entry page, to save comments from old entry
-    public BlogEntry(String title, String body, Set<Comment> comments) {
-        mComments = new TreeSet<>();
+    public BlogEntry(String title, String body, List<Comment> comments) {
+        mComments = new ArrayList<>();
         mTitle = title;
         mBody = body;
         mCreationDate = new Date();

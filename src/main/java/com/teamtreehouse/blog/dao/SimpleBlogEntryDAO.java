@@ -28,7 +28,7 @@ public class SimpleBlogEntryDAO implements BlogDao {
     @Override
     public BlogEntry findEntryBySlug(String slug) {
         return mBlogEntries.stream()
-                .filter(blogEntry -> blogEntry.getSlug().equals(slug))
+                .filter(blogEntry -> blogEntry.getHashId().equals(slug))
                 .findFirst()
                 .orElseThrow(NotFoundException::new);
     }

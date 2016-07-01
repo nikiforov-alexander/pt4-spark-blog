@@ -22,6 +22,7 @@ public class MainTest {
     private static final String notFoundMessage = "No such entry found";
     private ApiClient mApiClient;
     private static final String mCookieWithPassword = "password=admin";
+    private HashMap<String, Object> mErrorPageModel;
 
     @Rule
     public TestRule watcher = new TestWatcher() {
@@ -44,6 +45,9 @@ public class MainTest {
     @Before
     public void setUp() throws Exception {
         mApiClient = new ApiClient("http://localhost:" + PORT);
+        mErrorPageModel = new HashMap<>();
+        mErrorPageModel.put("status", 404);
+        mErrorPageModel.put("errorMessage", notFoundMessage);
     }
 
     // methods to get html page as a string giving a .hbs file name and model
@@ -128,18 +132,28 @@ public class MainTest {
     }
 
     @Test
-    public void authorizedRequestOnEditEntryPageWithNoEntriesShowsNotFoundPage()
+    public void authorizedRequestOnDetailEntryPageShowsNotFoundPage()
             throws Exception {
         // Given cookie with password and empty DAO with no entries
         // model:
-        Map<String, Object> model = new HashMap<>();
-        model.put("status", 404);
-        model.put("errorMessage", notFoundMessage);
         // When get request to edit entry page is made
         // Then not-found error page is returned
         assertEquals(
-                getHtmlOfPageWithHbsWithModel("not-found.hbs", model),
-                getResponseBodyOfGetRequestWithRightPasswordCookie("/entries/edit/1234543/title"));
+                getHtmlOfPageWithHbsWithModel("not-found.hbs", mErrorPageModel),
+                getResponseBodyOfGetRequestWithRightPasswordCookie(
+                        "/entries/detail/1234543/title"));
+    }
+    @Test
+    public void authorizedRequestOnEditEntryPageWithNoEntriesShowsNotFoundPage()
+            throws Exception {
+        // Given cookie with password and empty DAO with no entries
+        // model of error page:
+        // When get request to edit entry page is made
+        // Then not-found error page is returned
+        assertEquals(
+                getHtmlOfPageWithHbsWithModel("not-found.hbs", mErrorPageModel),
+                getResponseBodyOfGetRequestWithRightPasswordCookie(
+                        "/entries/edit/1234543/title"));
     }
 
     // Not quite right test, but I will still include it
@@ -179,4 +193,6 @@ public class MainTest {
                 getResponseBodyOfPostRequestWithoutPasswordCookie(
                         "/password","password=password"));
     }
+
+
 }

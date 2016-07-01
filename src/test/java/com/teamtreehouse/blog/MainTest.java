@@ -18,7 +18,7 @@ import java.util.Map;
 import static org.junit.Assert.*;
 
 public class MainTest {
-    public static final String PORT = "4568";
+    private static final String PORT = "4568";
     private static final String notFoundMessage = "No such entry found";
     private ApiClient mApiClient;
     private static final String mCookieWithPassword = "password=admin";

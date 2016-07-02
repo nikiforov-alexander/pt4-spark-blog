@@ -126,6 +126,7 @@ public class Main {
             }
             model.put("entry", blogEntry);
             model.put("comments", blogEntry.getComments());
+            model.put("tags", blogEntry.getTags());
             return new ModelAndView(model, "detail.hbs");
         }, new HandlebarsTemplateEngine());
         // create new comment on entries detail page

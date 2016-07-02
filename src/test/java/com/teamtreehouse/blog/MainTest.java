@@ -276,6 +276,7 @@ public class MainTest {
         HashMap<String, Object> model = new HashMap<>();
         model.put("entry", firstBlogEntry);
         model.put("comments", firstBlogEntry.getComments());
+        model.put("tags", firstBlogEntry.getTags());
         // Then body of response of this request should be equal to
         // modeled offline with handlebars page of detail entry with
         // new comment

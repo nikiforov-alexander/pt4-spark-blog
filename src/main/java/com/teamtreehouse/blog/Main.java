@@ -23,21 +23,23 @@ public class Main {
             String blogBody,
             String CommentName,
             Date CommentDate,
-            String CommentAuthor) {
+            String CommentAuthor,
+            String stringWithTags) {
         BlogEntry testBlogEntry = new BlogEntry(blogTitle, blogBody);
         Comment comment = new Comment(CommentName, CommentDate, CommentAuthor);
         testBlogEntry.addComment(comment);
+        testBlogEntry.slugifyTagsStringAndAddToTagsMember(stringWithTags);
         return testBlogEntry;
     }
     protected static void fillDaoWithThreeTestEntries() {
         mSimpleBlogEntryDAO.addEntry(createTestBlogEntryWithComments(
-               "Title1", "Body1", "Comment1", new Date(1L), "Author1"
+               "Title1", "Body1", "Comment1", new Date(1L), "Author1", "tag1"
         ));
         mSimpleBlogEntryDAO.addEntry(createTestBlogEntryWithComments(
-                "Title2", "Body2", "Comment2", new Date(2L), "Author2"
+                "Title2", "Body2", "Comment2", new Date(2L), "Author2", "tag2"
         ));
         mSimpleBlogEntryDAO.addEntry(createTestBlogEntryWithComments(
-                "Title3", "Body3", "Comment3", new Date(3L), "Author3"
+                "Title3", "Body3", "Comment3", new Date(3L), "Author3", "tag3"
         ));
     }
 
@@ -206,9 +208,11 @@ public class Main {
             // create new blog entry with title(non-null, see new.hbs) and body
             String newTitle = request.queryParams("title");
             String newBody = request.queryParams("body");
+            String newTags = request.queryParams("tags");
             BlogEntry newBlogEntry = new BlogEntry(newTitle,
                     newBody,
-                    oldBlogEntry.getComments());
+                    oldBlogEntry.getComments(),
+                    newTags);
             // even if user didn't change anything, because he pushed edit,
             // entry will have new creation date, the simplest way was, as I
             // thought is to remove and add new entry to DAO

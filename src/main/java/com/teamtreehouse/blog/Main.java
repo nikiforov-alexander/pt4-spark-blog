@@ -165,7 +165,8 @@ public class Main {
             // create new blog entry with title(non-null, see new.hbs) and body
             String newTitle = request.queryParams("title");
             String newBody = request.queryParams("body");
-            BlogEntry newBlogEntry = new BlogEntry(newTitle, newBody);
+            String newTags = request.queryParams("tags");
+            BlogEntry newBlogEntry = new BlogEntry(newTitle, newBody, newTags);
             // because our entries are unique (equals includes Date), no checks
             // here
             simpleBlogEntryDAO.addEntry(newBlogEntry);

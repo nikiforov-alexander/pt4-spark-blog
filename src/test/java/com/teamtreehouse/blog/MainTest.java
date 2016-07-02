@@ -170,7 +170,7 @@ public class MainTest {
         ApiResponse apiResponse =
                 mApiClient.request("POST",
                         "/entries/new",
-                        "title=title&body=body",
+                        "title=title&body=body&tags=tag1",
                         mCookieWithPassword);
         Map<String, Object> model = new HashMap<>();
         model.put("entries", Main.mSimpleBlogEntryDAO.findAllEntries());

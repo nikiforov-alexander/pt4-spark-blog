@@ -33,7 +33,7 @@ public class Main {
     }
     protected static void fillDaoWithThreeTestEntries() {
         mSimpleBlogEntryDAO.addEntry(createTestBlogEntryWithComments(
-               "Title1", "Body1", "Comment1", new Date(1L), "Author1", "tag1"
+               "Title1", "Body1", "Comment1", new Date(1L), "Author1", "tag1 tag2"
         ));
         mSimpleBlogEntryDAO.addEntry(createTestBlogEntryWithComments(
                 "Title2", "Body2", "Comment2", new Date(2L), "Author2", "tag2"

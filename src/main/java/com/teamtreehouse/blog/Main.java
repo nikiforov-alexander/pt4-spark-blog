@@ -31,7 +31,7 @@ public class Main {
         testBlogEntry.slugifyTagsStringAndAddToTagsMember(stringWithTags);
         return testBlogEntry;
     }
-    protected static void fillDaoWithThreeTestEntries() {
+    private static void fillDaoWithThreeTestEntries() {
         mSimpleBlogEntryDAO.addEntry(createTestBlogEntryWithComments(
                "Title1", "Body1", "Comment1", new Date(1L), "Author1", "tag1 tag2"
         ));

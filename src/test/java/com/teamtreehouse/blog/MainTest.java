@@ -223,6 +223,7 @@ public class MainTest {
         HashMap<String, Object> model = new HashMap<>();
         model.put("entry", firstBlogEntry);
         model.put("comments", firstBlogEntry.getComments());
+        model.put("tags", firstBlogEntry.getTags());
         // When we make GET request to detail page of first test Entry
         String requestBodyOfGetRequestToDetailPage =
                 getResponseBodyOfGetRequestWithRightPasswordCookie(

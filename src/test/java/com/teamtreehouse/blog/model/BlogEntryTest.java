@@ -13,11 +13,11 @@ public class BlogEntryTest {
     public void rightSetOfTagsIsCreatedFromBlogEntryConstructorWithStringWithTags()
             throws Exception {
         // Given string with tags, and right set of tags
-        String stringWithTags = " tag1, tag2  tag2;. tag4  ";
+        String stringWithTags = " tag1, tag-with-hyphen+  tag1;. tag_with_underscore  ";
         Set<String> setOfFourStrings = new HashSet<>();
         setOfFourStrings.add("tag1");
-        setOfFourStrings.add("tag2");
-        setOfFourStrings.add("tag4");
+        setOfFourStrings.add("tag-with-hyphen");
+        setOfFourStrings.add("tag_with_underscore");
         // When blog entry constructed from it
         BlogEntry blogEntry = new BlogEntry(
                         "title",

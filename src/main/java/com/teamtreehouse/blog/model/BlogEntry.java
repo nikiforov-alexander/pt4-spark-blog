@@ -15,6 +15,17 @@ public class BlogEntry {
     public Set<String> getTags() {
         return mTags;
     }
+    public String getStringOfTags() {
+        String stringWithTags = "";
+        if (mTags.size() > 0) {
+            List<String> listOfTags = new ArrayList<>(mTags);
+            for (int i = 0; i < mTags.size() - 1; i++) {
+                stringWithTags = stringWithTags + listOfTags.get(i) + ", ";
+            }
+            stringWithTags += listOfTags.get(mTags.size() - 1);
+        }
+        return stringWithTags;
+    }
 
     private List<Comment> mComments;
     public List<Comment> getComments() {

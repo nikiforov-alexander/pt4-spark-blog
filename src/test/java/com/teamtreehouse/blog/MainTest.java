@@ -321,7 +321,7 @@ public class MainTest {
                 getResponseBodyOfPostRequestWithRightPasswordCookie(
                         "/entries/save/" + firstBlogEntry.getHashId() + "/"
                         + firstBlogEntry.getSlugFromTitle(),
-                       "title=title&body=body"
+                       "title=title&body=body&tags=tag1"
                 );
         Map<String, Object> model = new HashMap<>();
         model.put("entries", Main.mSimpleBlogEntryDAO.findAllEntries());

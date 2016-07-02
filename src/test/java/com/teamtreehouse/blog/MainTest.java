@@ -331,4 +331,46 @@ public class MainTest {
         assertEquals(bodyOfResponseToPostRequestMadeToEditPage,
                 htmlStringOfModeledIndexPageWithNewEntry);
     }
+
+    @Test
+    public void removingFirstEntryReturnsHomePageWithTwoEntries()
+            throws Exception {
+        // Given cookie with password, no session, dao with three test entries,
+        // and detail page of first entry
+        BlogEntry firstBlogEntry =
+                Main.mSimpleBlogEntryDAO.findAllEntries().get(0);
+        // When remove button is pressed, and get request to /entries/remove/...
+        // is made
+        String responseBodyOfGetRequestMadeWhenRemoveIsPressed =
+                getResponseBodyOfGetRequestWithRightPasswordCookie(
+                        "/entries/remove/" + firstBlogEntry.getHashId() + "/"
+                        + firstBlogEntry.getSlugFromTitle()
+                );
+        HashMap<String, Object> model = new HashMap<>();
+        model.put("entries", Main.mSimpleBlogEntryDAO.findAllEntries());
+        String htmlStringOfPageGeneratedByHandlebarsByUs =
+                getHtmlOfPageWithHbsWithModel("index.hbs", model);
+        // Then user should be returned to home page, and body of the page
+        // generated from changed DAO by us is equal to get response body
+        assertEquals(
+                htmlStringOfPageGeneratedByHandlebarsByUs,
+                responseBodyOfGetRequestMadeWhenRemoveIsPressed);
+    }
+    @Test
+    public void makingGetRequestToNonExistingEntryReturnsErrorPageAndNotServerError()
+            throws Exception {
+        // Given cookie with password, no session, dao with three test entries,
+        // When remove button is pressed, and get request to /entries/remove/...
+        // is made
+        String responseBodyOfGetRequestMadeWhenRemoveIsPressed =
+                getResponseBodyOfGetRequestWithRightPasswordCookie(
+                        "/entries/remove/123456/title");
+        String htmlStringOfErrorPageGeneratedByUs =
+                getHtmlOfPageWithHbsWithModel("not-found.hbs", mErrorPageModel);
+        // Then user should be returned to home page, and body of the page
+        // generated from changed DAO by us is equal to get response body
+        assertEquals(
+                htmlStringOfErrorPageGeneratedByUs,
+                responseBodyOfGetRequestMadeWhenRemoveIsPressed);
+    }
 }

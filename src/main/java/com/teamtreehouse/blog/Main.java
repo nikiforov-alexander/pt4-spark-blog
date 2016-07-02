@@ -219,6 +219,23 @@ public class Main {
             return null;
         });
 
+        // remove entry from detail page
+        get("/entries/remove/:hashId/:slugFromTitle", (request, response) -> {
+            String hashId = request.params("hashId");
+            // get old blog entry by slug
+            BlogEntry blogEntry;
+            try {
+                blogEntry = simpleBlogEntryDAO.findEntryBySlug(hashId);
+            } catch (NotFoundException nfe) {
+                throw new ApiError(404, notFoundMessage);
+            }
+            // remove entry from dao
+            simpleBlogEntryDAO.removeEntry(blogEntry);
+            // redirect to home page
+            response.redirect("/");
+            return null;
+        });
+
         // all exceptions will be processed through this lambda
         exception(ApiError.class, (exception, request, response) -> {
             ApiError apiError = (ApiError) exception;

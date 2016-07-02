@@ -147,6 +147,20 @@ public class BlogEntry {
         // slugify tags
         slugifyTagsStringAndAddToTagsMember(tagsString);
     }
+    // constructor used in new entry page with tags
+    public BlogEntry(
+            String title,
+            String body,
+            String tagsString) {
+        mTitle = title;
+        mBody = body;
+        mCreationDate = new Date();
+        setSlugUsingTitleAndCreationDate();
+        mComments = new ArrayList<>();
+        mTags = new HashSet<>();
+        // slugify tags
+        slugifyTagsStringAndAddToTagsMember(tagsString);
+    }
 
     // Blog entries will be equal if body and title are same, otherwise
 

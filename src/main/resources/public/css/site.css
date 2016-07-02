@@ -4,7 +4,8 @@
    Global Styles
    ========================================================================== */
 body {
-	background: url(../../concepts/JavaTechdegree_SparkBlog_1.jg) top center no-repeat;
+	/*background: url(../../concepts/JavaTechdegree_SparkBlog_1.jg) top center no-repeat;*/
+    background: top center no-repeat;
 	font-size: 15px;
 	color: #000;
 	font-family: 'Noto Serif', Georgia, serif;
@@ -72,6 +73,13 @@ footer a {
 	background: transparent;
 	border-color: #000;
 	color: #000;
+}
+/* remove button*/
+.button.button-remove {
+	background: transparent;
+	border-color: #606060;
+	color: #000;
+    margin-left: 4px;
 }
 .button.button-round {
 	border-radius: 100px;

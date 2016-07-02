@@ -115,7 +115,7 @@ public class BlogEntry {
         mComments = comments;
         mTags = new HashSet<>();
     }
-    protected void slugifyTagsStringAndAddToTagsMember(String tagsString) {
+    public void slugifyTagsStringAndAddToTagsMember(String tagsString) {
         Pattern pattern = Pattern.compile("([a-zA-Z0-9-_]+)");
         Matcher matcher = pattern.matcher(tagsString);
         while (matcher.find()) {

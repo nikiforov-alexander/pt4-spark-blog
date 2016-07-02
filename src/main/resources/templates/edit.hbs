@@ -12,8 +12,12 @@
                     <!--changed name attr to "body" for convenience-->
                     <textarea rows="5" name="body">{{ entry.body }}</textarea>
                     <input type="submit" value="Save Entry" class="button">
+                    <!--Cancel button-->
                     <a href="/entries/detail/{{ entry.hashId }}/{{ entry.slugFromTitle }}"
                        class="button button-secondary">Cancel</a>
+                    <!--Remove button-->
+                    <a href="/entries/remove/{{ entry.hashId }}/{{ entry.slugFromTitle }}"
+                       class="button button-remove">Remove</a>
                 </form>
             </div>
         </div>

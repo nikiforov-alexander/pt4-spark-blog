@@ -308,4 +308,27 @@ public class MainTest {
                 bodyOfGetRequestWithRightPassword
                 );
     }
+
+    @Test
+    public void postRequestToSaveEntryReturnsCorrectHomePage() throws Exception {
+        // Given cookie with password, dao with three test entries, no
+        // sessions, and first entry edit page
+        BlogEntry firstBlogEntry =
+                Main.mSimpleBlogEntryDAO.findAllEntries().get(0);
+        // When user edits entry, changing title and body
+        String bodyOfResponseToPostRequestMadeToEditPage =
+                getResponseBodyOfPostRequestWithRightPasswordCookie(
+                        "/entries/save/" + firstBlogEntry.getHashId() + "/"
+                        + firstBlogEntry.getSlugFromTitle(),
+                       "title=title&body=body"
+                );
+        Map<String, Object> model = new HashMap<>();
+        model.put("entries", Main.mSimpleBlogEntryDAO.findAllEntries());
+        String htmlStringOfModeledIndexPageWithNewEntry =
+                getHtmlOfPageWithHbsWithModel("index.hbs", model);
+        // Then body of response should be equal to new home page with changed
+        // home page
+        assertEquals(bodyOfResponseToPostRequestMadeToEditPage,
+                htmlStringOfModeledIndexPageWithNewEntry);
+    }
 }

@@ -4,9 +4,28 @@ import com.github.slugify.Slugify;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class BlogEntry {
+    private Set<String> mTags;
+    public Set<String> getTags() {
+        return mTags;
+    }
+    public String getStringOfTags() {
+        String stringWithTags = "";
+        if (mTags.size() > 0) {
+            List<String> listOfTags = new ArrayList<>(mTags);
+            for (int i = 0; i < mTags.size() - 1; i++) {
+                stringWithTags = stringWithTags + listOfTags.get(i) + ", ";
+            }
+            stringWithTags += listOfTags.get(mTags.size() - 1);
+        }
+        return stringWithTags;
+    }
 
     private List<Comment> mComments;
     public List<Comment> getComments() {
@@ -82,6 +101,7 @@ public class BlogEntry {
         mBody = body;
         mCreationDate = new Date();
         setSlugUsingTitleAndCreationDate();
+        mTags = new HashSet<>();
     }
     // constructor used in edit entry page, to save comments from old entry
     public BlogEntry(String title, String body, List<Comment> comments) {
@@ -93,6 +113,53 @@ public class BlogEntry {
         // now i hope here, that I shouldn't type mComments = new Set(comments)
         // because when we remove later on old blog entry
         mComments = comments;
+        mTags = new HashSet<>();
+    }
+    public void slugifyTagsStringAndAddToTagsMember(String tagsString) {
+        Pattern pattern = Pattern.compile("([a-zA-Z0-9-_]+)");
+        Matcher matcher = pattern.matcher(tagsString);
+        while (matcher.find()) {
+            String tag = matcher.group();
+            try {
+                Slugify slugify = new Slugify();
+                mTags.add(slugify.slugify(tag));
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
+        }
+    }
+    // constructor used in edit entry page, to save comments from old entry
+    // with tags
+    public BlogEntry(
+            String title,
+            String body,
+            List<Comment> comments,
+            String tagsString) {
+        mTitle = title;
+        mBody = body;
+        mCreationDate = new Date();
+        setSlugUsingTitleAndCreationDate();
+        // now i hope here, that I shouldn't type mComments = new Set(comments)
+        // because when we remove later on old blog entry
+        mComments = comments;
+        // create new tags set, because we don't want same tags
+        mTags = new HashSet<>();
+        // slugify tags
+        slugifyTagsStringAndAddToTagsMember(tagsString);
+    }
+    // constructor used in new entry page with tags
+    public BlogEntry(
+            String title,
+            String body,
+            String tagsString) {
+        mTitle = title;
+        mBody = body;
+        mCreationDate = new Date();
+        setSlugUsingTitleAndCreationDate();
+        mComments = new ArrayList<>();
+        mTags = new HashSet<>();
+        // slugify tags
+        slugifyTagsStringAndAddToTagsMember(tagsString);
     }
 
     // Blog entries will be equal if body and title are same, otherwise

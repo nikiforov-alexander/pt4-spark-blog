@@ -170,7 +170,7 @@ public class MainTest {
         ApiResponse apiResponse =
                 mApiClient.request("POST",
                         "/entries/new",
-                        "title=title&body=body",
+                        "title=title&body=body&tags=tag1",
                         mCookieWithPassword);
         Map<String, Object> model = new HashMap<>();
         model.put("entries", Main.mSimpleBlogEntryDAO.findAllEntries());
@@ -223,6 +223,7 @@ public class MainTest {
         HashMap<String, Object> model = new HashMap<>();
         model.put("entry", firstBlogEntry);
         model.put("comments", firstBlogEntry.getComments());
+        model.put("tags", firstBlogEntry.getTags());
         // When we make GET request to detail page of first test Entry
         String requestBodyOfGetRequestToDetailPage =
                 getResponseBodyOfGetRequestWithRightPasswordCookie(
@@ -275,6 +276,7 @@ public class MainTest {
         HashMap<String, Object> model = new HashMap<>();
         model.put("entry", firstBlogEntry);
         model.put("comments", firstBlogEntry.getComments());
+        model.put("tags", firstBlogEntry.getTags());
         // Then body of response of this request should be equal to
         // modeled offline with handlebars page of detail entry with
         // new comment
@@ -320,7 +322,7 @@ public class MainTest {
                 getResponseBodyOfPostRequestWithRightPasswordCookie(
                         "/entries/save/" + firstBlogEntry.getHashId() + "/"
                         + firstBlogEntry.getSlugFromTitle(),
-                       "title=title&body=body"
+                       "title=title&body=body&tags=tag1"
                 );
         Map<String, Object> model = new HashMap<>();
         model.put("entries", Main.mSimpleBlogEntryDAO.findAllEntries());

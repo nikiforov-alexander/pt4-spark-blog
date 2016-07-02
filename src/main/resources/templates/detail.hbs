@@ -7,6 +7,9 @@
                     <time datetime={{ entry.htmlCreationDate }}>
                         {{ entry.creationDateString }}
                     </time>
+                    {{#each tags}}
+                        <a href="#" class="tag">#{{ this }}</a>
+                    {{/each}}
                     <div class="entry">
                         <p>{{ entry.body }}</p>
                         <p>

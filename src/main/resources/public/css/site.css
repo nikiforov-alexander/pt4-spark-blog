@@ -162,6 +162,12 @@ a.link {
 	text-decoration: none;
 	color: #000;
 }
+/* added a bit bigger size for tag*/
+.tag {
+    font-size: 17px;
+    text-decoration: none;
+    color: #000;
+}
 .entry-list time {
 	color: #888;
 }

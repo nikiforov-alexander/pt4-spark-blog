@@ -34,11 +34,6 @@ public class SimpleBlogEntryDAO implements BlogDao {
     }
 
     @Override
-    public boolean containsEntry(BlogEntry blogEntry) {
-        return mBlogEntries.contains(blogEntry);
-    }
-
-    @Override
     public boolean removeEntry(BlogEntry blogEntry) {
         return mBlogEntries.remove(blogEntry);
     }

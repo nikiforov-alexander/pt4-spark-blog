@@ -12,6 +12,10 @@
 * [4.] (#task-4) Create a DAO interface for data storage and access and 
     implement it.
 * [5.] (#task-5) Add necessary routes.
+* [6.] (#task-6)Create index view as the homepage. This view contains 
+    a list of blog entries, which displays Title, Date/Time Created. 
+    Title should be hyperlinked to the detail page for each blog entry. 
+    Include a link to add an entry. 
 <hr>
 
 [resources]:src/main/resources 
@@ -88,10 +92,25 @@
         and `post("/entries/new")`
     - edit entry page (password-protected: 
     `get("/entries/edit/:hashId/:slugFromTitle")`
-    - save entry on edit entry page:  
+    - save entry on edit entry page: 
         `post("/entries/save/:hashId/:slugFromTitle")`
     - remove entry on edit page (made through get request) : 
         `get("/entries/remove/:hashId/:slugFromTitle")`
     - when [NotFoundException] is thrown, user is redirected to: 
         `exception(ApiError.class)` not-found page
+<hr>
+6.  <a id="task-6"></a>
+    Create index view as the homepage. This view contains a list of 
+    blog entries, which displays Title, Date/Time Created. Title should 
+    be hyperlinked to the detail page for each blog entry. Include a 
+    link to add an entry.
+    <hr>
+    Index page `get("/")` is modeled exactly as in mockup, also tags 
+    are added after creation date. Three test entries displayed on the 
+    page, as asked. Link to add an entry is bound to top right button. 
+    Titles of entries will redirect to detailed entry pages. 
+    Tags are hollow links right now. Later they will redirect to pages 
+    sorted by tag. Top left Spark blog logo will lead to homepage.
+    "Contact us" and "Terms" at the bottom of the page right now do not 
+    lead anywhere.
 <hr>

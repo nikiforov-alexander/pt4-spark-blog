@@ -69,7 +69,11 @@ public class Main {
         // is set to remember page we were previously, so that if password is
         // successful, we get back where we were
         String[] protectedRoutes =
-                new String[] {"/entries/new", "/entries/edit/*"};
+                new String[] {
+                        "/entries/new",
+                        "/entries/edit/*",
+                        "/entries/remove/*",
+                        "/entries/save/*"};
         Filter filter = (request, response) -> {
             request.session().attribute("protected-page",request.uri());
             if (request.cookie("password") == null

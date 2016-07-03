@@ -49,7 +49,7 @@
 4.  <a id="task-4"></a>
     Create a DAO interface for data storage and access and implement it.
     <hr>
-    DAO interface is [BlogDao](src/main/java/com/teamtreehouse/blog/dao/BlogEntryDao.java). 
+    DAO interface is [BlogDao](src/main/java/com/teamtreehouse/blog/dao/BlogDao.java). 
     It has 4 methods:
     - `addEntry(BlogEntry blogEntry)`
     - `findAllEntries()`

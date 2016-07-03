@@ -23,6 +23,8 @@
     provide 'admin' as the username. This page should display before 
     adding or editing a comment if there is no cookie present that has 
     the value 'admin'.
+* [9.] (#task-9) Create add/edit page that is blocked by a password 
+    page, using before filter.
 <hr>
 
 [resources]:src/main/resources 
@@ -152,4 +154,10 @@
     Note: In `before` filter address of protected page saved to session 
     attribute, so that later after right password, user will be 
     redirected to page where he was before.
+<hr>
+9.  <a id="task-9"></a>
+    Create add/edit page that is blocked by a password page, 
+    using before filter.
+    <hr>
+    See [task 8](#task-8).
 <hr>

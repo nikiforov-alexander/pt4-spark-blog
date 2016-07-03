@@ -49,7 +49,7 @@
 4.  <a id="task-4"></a>
     Create a DAO interface for data storage and access and implement it.
     <hr>
-    DAO interface is [BlogDao](src/main/java/com/teamtreehouse/blog/dao/Date.java). 
+    DAO interface is [BlogDao](src/main/java/com/teamtreehouse/blog/dao/BlogEntryDao.java). 
     It has 4 methods:
     - `addEntry(BlogEntry blogEntry)`
     - `findAllEntries()`
@@ -62,7 +62,7 @@
     Method `findEntriesBySlug` actually find entries by unique hashId
     generated for each blog entry from date and title, see 
     `setSlugUsingTitleAndCreationDate()` in [BlogEntry](src/main/java/com/teamtreehouse/blog/model/BlogEntry.java), 
-    and implementation in [SimpleBlogEntryDAO](src/main/java/com/teamtreehouse/blog/model/SimpleBlogEntryDAO.java). 
+    and implementation in [SimpleBlogEntryDAO](src/main/java/com/teamtreehouse/blog/dao/SimpleBlogEntryDAO.java). 
     
-    Implementation of dao is called [SimpleBlogEntryDAO](src/main/java/com/teamtreehouse/blog/model/SimpleBlogEntryDAO.java). 
+    Implementation of dao is called [SimpleBlogEntryDAO](src/main/java/com/teamtreehouse/blog/dao/SimpleBlogEntryDAO.java). 
 <hr>

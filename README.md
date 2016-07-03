@@ -14,15 +14,15 @@
 * [5.] (#task-5) Add necessary routes.
 <hr>
 
-[resources]:(src/main/resources) 
-[templates]:(src/main/resources/templates)
-[css]:(src/main/resources/public/css) 
-[BlogEntry]:(src/main/java/com/teamtreehouse/blog/model/BlogEntry.java) 
-[Comment]:(src/main/java/com/teamtreehouse/blog/model/Comment.java) 
-[Date]:(src/main/java/com/teamtreehouse/blog/model/Date.java) 
-[BlogDao]:(src/main/java/com/teamtreehouse/blog/dao/BlogDao.java)
-[SimpleBlogEntryDAO]:(src/main/java/com/teamtreehouse/blog/dao/SimpleBlogEntryDAO.java) 
-[NotFoundException]:(src/main/java/com/teamtreehouse/blog/exception/NotFoundException.java) 
+[resources]:src/main/resources 
+[templates]:src/main/resources/templates
+[css]:src/main/resources/public/css 
+[BlogEntry]:src/main/java/com/teamtreehouse/blog/model/BlogEntry.java 
+[Comment]:src/main/java/com/teamtreehouse/blog/model/Comment.java 
+[Date]:src/main/java/com/teamtreehouse/blog/model/Date.java 
+[BlogDao]:src/main/java/com/teamtreehouse/blog/dao/BlogDao.java
+[SimpleBlogEntryDAO]:src/main/java/com/teamtreehouse/blog/dao/SimpleBlogEntryDAO.java 
+[NotFoundException]:src/main/java/com/teamtreehouse/blog/exception/NotFoundException.java 
 
 1.  <a id="task-1"></a>
     Use the supplied mockup files to build a personal blog.

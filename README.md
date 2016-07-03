@@ -35,8 +35,9 @@
     - [BlogEntry](src/main/java/com/teamtreehouse/blog/model/BlogEntry.java) 
     - [Comment](src/main/java/com/teamtreehouse/blog/model/Comment.java) 
     
-    I also added Date class, just for convenience, that inherits 
-    java.util.Date class, but has two additional methods, that return
+    I also added [Date](src/main/java/com/teamtreehouse/blog/model/Date.java) 
+    class, just for convenience, that inherits 
+    `java.util.Date` class, but has two additional methods, that return
     date in right machine-readable format for html datetime element: 
     `getHtmlCreationDate()` 
     and return date in format provided in mockup files for users to see

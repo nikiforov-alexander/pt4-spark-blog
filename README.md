@@ -7,8 +7,10 @@
         required Spark dependencies, and create the directory and package 
         structure of the application. Save all static assets into the 
         proper directory.
-* [3.] (#task-3) Create model classes for blog entries and blog comments.
-
+* [3.] (#task-3) Create model classes for blog entries and blog 
+    comments.
+* [4.] (#task-4) Create a DAO interface for data storage and access and 
+    implement it.
 <hr>
 1.  <a id="task-1"></a>
     Use the supplied mockup files to build a personal blog.
@@ -30,8 +32,9 @@
     [resources/templates](src/main/resources/templates)
 <hr>
 3.  <a id="task-3"></a>
-    Create model classes for blog entries and blog comments. Model 
-    classes are:
+    Create model classes for blog entries and blog comments. 
+    <hr>
+    Model classes are:
     - [BlogEntry](src/main/java/com/teamtreehouse/blog/model/BlogEntry.java) 
     - [Comment](src/main/java/com/teamtreehouse/blog/model/Comment.java) 
     
@@ -42,4 +45,24 @@
     `getHtmlCreationDate()` 
     and return date in format provided in mockup files for users to see
     `getCreationDateString()`
+<hr>
+4.  <a id="task-4"></a>
+    Create a DAO interface for data storage and access and implement it.
+    <hr>
+    DAO interface is [BlogDao](src/main/java/com/teamtreehouse/blog/dao/Date.java). 
+    It has 4 methods:
+    - `addEntry(BlogEntry blogEntry)`
+    - `findAllEntries()`
+    - `findEntriesBySlug(String slug)`
+    - `removeEntry(BlogEntry newBlogEntry)`
+    
+    First three methods were given. `removeEntry` method I added in 
+    order to remove entry on edit page and when old entry is edited,
+    old one is removed, preserving the comments, and new one is added.
+    Method `findEntriesBySlug` actually find entries by unique hashId
+    generated for each blog entry from date and title, see 
+    `setSlugUsingTitleAndCreationDate()` in [BlogEntry](src/main/java/com/teamtreehouse/blog/model/BlogEntry.java), 
+    and implementation in [SimpleBlogEntryDAO](src/main/java/com/teamtreehouse/blog/model/SimpleBlogEntryDAO.java). 
+    
+    Implementation of dao is called [SimpleBlogEntryDAO](src/main/java/com/teamtreehouse/blog/model/SimpleBlogEntryDAO.java). 
 <hr>

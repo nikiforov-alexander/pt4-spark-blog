@@ -25,11 +25,14 @@
     the value 'admin'.
 * [9.] (#task-9) Create add/edit page that is blocked by a password 
     page, using before filter.
+* [10.] (#task-10) Use CSS to style headings, font colors, blog entry 
+    container colors, body colors.
 <hr>
 
 [resources]:src/main/resources 
 [templates]:src/main/resources/templates
 [css]:src/main/resources/public/css 
+[main.css]:src/main/resources/public/css/main.css 
 [BlogEntry]:src/main/java/com/teamtreehouse/blog/model/BlogEntry.java 
 [Comment]:src/main/java/com/teamtreehouse/blog/model/Comment.java 
 [Date]:src/main/java/com/teamtreehouse/blog/model/Date.java 
@@ -160,4 +163,11 @@
     using before filter.
     <hr>
     See [task 8](#task-8).
+<hr>
+10. <a id="task-10"></a>
+    Use CSS to style headings, font colors, blog entry container 
+    colors, body colors.
+    <hr>
+    Provided CSS files are used, with couple of small additions, see
+    [main.css].
 <hr>

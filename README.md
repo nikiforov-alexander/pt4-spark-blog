@@ -16,7 +16,6 @@
     All 5 html files were used to create according .hbs files. CSS files 
     are used as well, with some tiny changes, like adding class for tag 
     and remove button.
-    
 <hr>
 2.  <a id="task-2"></a>
     In IntelliJ IDEA, create a Gradle project. Add all required Spark 
@@ -25,9 +24,9 @@
     <hr>
     Gradle project created with all spark dependencies. Resources
     directory is created and marked as resources. CSS files are in 
-    resources/public/css. Template .hbs files are in 
+    [resources/public/css](src/main/resources/public/css). 
+    Template .hbs files are in 
     /resources/templates
-    
 <hr>
 3.  <a id="task-3"></a>
 

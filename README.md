@@ -19,6 +19,10 @@
 * [7.] (#task-7) Create detail page displaying blog entry and submitted 
     comments. Detail page should also display a comment form with Name 
     and Comment. Include a link to edit the entry.
+* [8.] (#task-8) Create a password page that requires a user to 
+    provide 'admin' as the username. This page should display before 
+    adding or editing a comment if there is no cookie present that has 
+    the value 'admin'.
 <hr>
 
 [resources]:src/main/resources 
@@ -127,6 +131,25 @@
     however author field and entry field right now are required. From
     this page user can edit entry. Link is right before entry's body.
     Tags are shown, as hollow hyperlinks, for now. Links to add new
-    entry, go home, "contact us" and "terms", are also here, just like  
+    entry, go home, "contact us" and "terms", are also here, just like 
     at home page
+<hr>
+8. <a id="task-7"></a>
+    Create a password page that requires a user to provide 'admin' 
+    as the username. This page should display before adding or 
+    editing a comment if there is no cookie present that has the 
+    value 'admin'.
+    <hr>
+    Password page is implemented in `get("/password")` with post
+    request `post("/password")`. Filter is implemented in `before` 
+    lambda to check if the cookie with name "password" and value 
+    "admin" is set. The before filter is applied for:
+    - edit entry page : `/entries/edit/*`
+    - new entry page: `/entries/new`
+    - save entry post request: `/entries/save/*`
+    - remove entry get request: `/entries/remove/*`
+    
+    Note: In `before` filter address of protected page saved to session 
+    attribute, so that later after right password, user will be 
+    redirected to page where he was before.
 <hr>

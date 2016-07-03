@@ -12,10 +12,13 @@
 * [4.] (#task-4) Create a DAO interface for data storage and access and 
     implement it.
 * [5.] (#task-5) Add necessary routes.
-* [6.] (#task-6)Create index view as the homepage. This view contains 
+* [6.] (#task-6) Create index view as the homepage. This view contains 
     a list of blog entries, which displays Title, Date/Time Created. 
     Title should be hyperlinked to the detail page for each blog entry. 
     Include a link to add an entry. 
+* [7.] (#task-7) Create detail page displaying blog entry and submitted 
+    comments. Detail page should also display a comment form with Name 
+    and Comment. Include a link to edit the entry.
 <hr>
 
 [resources]:src/main/resources 
@@ -113,4 +116,17 @@
     sorted by tag. Top left Spark blog logo will lead to homepage.
     "Contact us" and "Terms" at the bottom of the page right now do not 
     lead anywhere.
+<hr>
+7. <a id="task-7"></a>
+    Create detail page displaying blog entry and submitted comments. 
+    Detail page should also display a comment form with Name and 
+    Comment. Include a link to edit the entry.
+    <hr>
+    Detail page `get("/entries/detail/:hashId/:slugFromTitle")` displays
+    title, comment, body of entry and tags. User can add comments, 
+    however author field and entry field right now are required. From
+    this page user can edit entry. Link is right before entry's body.
+    Tags are shown, as hollow hyperlinks, for now. Links to add new
+    entry, go home, "contact us" and "terms", are also here, just like  
+    at home page
 <hr>

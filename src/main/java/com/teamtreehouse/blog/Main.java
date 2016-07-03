@@ -79,6 +79,8 @@ public class Main {
             if (request.cookie("password") == null
                     || !request.cookie("password").equals(masterPassword)) {
                response.redirect("/password");
+               // stop from processing with initial request
+               halt();
             }
         };
         for (String route: protectedRoutes) {

@@ -11,7 +11,19 @@
     comments.
 * [4.] (#task-4) Create a DAO interface for data storage and access and 
     implement it.
+* [5.] (#task-5) Add necessary routes.
 <hr>
+
+[resources]:(src/main/resources) 
+[templates]:(src/main/resources/templates)
+[css]:(src/main/resources/public/css) 
+[BlogEntry]:(src/main/java/com/teamtreehouse/blog/model/BlogEntry.java) 
+[Comment]:(src/main/java/com/teamtreehouse/blog/model/Comment.java) 
+[Date]:(src/main/java/com/teamtreehouse/blog/model/Date.java) 
+[BlogDao]:(src/main/java/com/teamtreehouse/blog/dao/BlogDao.java)
+[SimpleBlogEntryDAO]:(src/main/java/com/teamtreehouse/blog/dao/SimpleBlogEntryDAO.java) 
+[NotFoundException]:(src/main/java/com/teamtreehouse/blog/exception/NotFoundException.java) 
+
 1.  <a id="task-1"></a>
     Use the supplied mockup files to build a personal blog.
     <hr>
@@ -25,21 +37,18 @@
     application. Save all static assets into the proper directory.
     <hr>
     Gradle project created with all spark dependencies. Resources
-    directory is created and marked as [resources](src/main/resources). 
-    CSS files are in 
-    [resources/public/css](src/main/resources/public/css). 
-    Template .hbs files are in 
-    [resources/templates](src/main/resources/templates)
+    directory [resources] is created and marked as dir. 
+    CSS files are in [css] dir.
+    Template .hbs files are in [templates] dir.
 <hr>
 3.  <a id="task-3"></a>
     Create model classes for blog entries and blog comments. 
     <hr>
     Model classes are:
-    - [BlogEntry](src/main/java/com/teamtreehouse/blog/model/BlogEntry.java) 
-    - [Comment](src/main/java/com/teamtreehouse/blog/model/Comment.java) 
+    - [BlogEntry]
+    - [Comment]
     
-    I also added [Date](src/main/java/com/teamtreehouse/blog/model/Date.java) 
-    class, just for convenience, that inherits 
+    I also added [Date] class, just for convenience, that inherits 
     `java.util.Date` class, but has two additional methods, that return
     date in right machine-readable format for html datetime element: 
     `getHtmlCreationDate()` 
@@ -49,7 +58,7 @@
 4.  <a id="task-4"></a>
     Create a DAO interface for data storage and access and implement it.
     <hr>
-    DAO interface is [BlogDao](src/main/java/com/teamtreehouse/blog/dao/BlogDao.java). 
+    DAO interface is [BlogDao]. 
     It has 4 methods:
     - `addEntry(BlogEntry blogEntry)`
     - `findAllEntries()`
@@ -61,8 +70,28 @@
     old one is removed, preserving the comments, and new one is added.
     Method `findEntriesBySlug` actually find entries by unique hashId
     generated for each blog entry from date and title, see 
-    `setSlugUsingTitleAndCreationDate()` in [BlogEntry](src/main/java/com/teamtreehouse/blog/model/BlogEntry.java), 
-    and implementation in [SimpleBlogEntryDAO](src/main/java/com/teamtreehouse/blog/dao/SimpleBlogEntryDAO.java). 
+    `setSlugUsingTitleAndCreationDate()` in [BlogEntry], 
+    and implementation in [SimpleBlogEntryDAO]. 
     
-    Implementation of dao is called [SimpleBlogEntryDAO](src/main/java/com/teamtreehouse/blog/dao/SimpleBlogEntryDAO.java). 
+    Implementation of dao is called [SimpleBlogEntryDAO]. 
+<hr>
+5.  <a id="task-5"></a> 
+    Add necessary routes
+    <hr>
+    Following routes were added:
+    - password page : `get("/password")` and `post("/password")`.
+    - home page : `get("/")`.
+    - entries detail page: `get("/entries/detail/:hashId/:slugFromTitle")`
+    - post comments on entries detail page: 
+        `post("/entries/detail/:hashId/:slugFromTitle")`
+    - new entry page (password-protected): with `get("/entries/new")` 
+        and `post("/entries/new")`
+    - edit entry page (password-protected: 
+    `get("/entries/edit/:hashId/:slugFromTitle")`
+    - save entry on edit entry page:  
+        `post("/entries/save/:hashId/:slugFromTitle")`
+    - remove entry on edit page (made through get request) : 
+        `get("/entries/remove/:hashId/:slugFromTitle")`
+    - when [NotFoundException] is thrown, user is redirected to: 
+        `exception(ApiError.class)` not-found page
 <hr>

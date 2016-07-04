@@ -27,6 +27,10 @@
     page, using before filter.
 * [10.] (#task-10) Use CSS to style headings, font colors, blog entry 
     container colors, body colors.
+### Extra Credit
+* [11.] (#task-11)
+    Add tags to blog entries, which enables the ability to categorize. 
+    A blog entry can exist with no tags, or have multiple tags.
 <hr>
 
 [resources]:src/main/resources 
@@ -39,7 +43,7 @@
 [BlogDao]:src/main/java/com/teamtreehouse/blog/dao/BlogDao.java
 [SimpleBlogEntryDAO]:src/main/java/com/teamtreehouse/blog/dao/SimpleBlogEntryDAO.java 
 [NotFoundException]:src/main/java/com/teamtreehouse/blog/exception/NotFoundException.java 
-
+### Tasks
 1.  <a id="task-1"></a>
     Use the supplied mockup files to build a personal blog.
     <hr>
@@ -171,3 +175,23 @@
     Provided CSS files are used, with couple of small additions, see
     [main.css].
 <hr>
+### Extra Credit
+11. <a id="task-11"></a>
+    Add tags to blog entries, which enables the ability to categorize. 
+    A blog entry can exist with no tags, or have multiple tags.
+    <hr>
+    Blog entries can have tags. On homepage and "detail" pages 
+    tags are displayed with
+    "#" symbols, and implemented as hyperlinks, so that in future it
+    is possible to redirect user to page with list of entries, 
+    containing tags. On "edit" and "new" pages there is a text field
+    where tags can be entered. User input processed using 
+    `slugifyTagsStringAndAddToTagsMember` function in [BlogEntry]. It
+    is used in BlogEntry constructor. Tags can be any letters, numbers,
+    hyphen and underscore. String with tags entered by user is
+    processed by groups of these valid characters, and then gets 
+    slugified, to be converted to valid link, so that we can later
+    access entries with tags, like /entries/tags/{slug-from-tag}. This
+    is not yet realized in current version.
+<hr>
+    

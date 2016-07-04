@@ -39,7 +39,7 @@
 [resources]:src/main/resources 
 [templates]:src/main/resources/templates
 [css]:src/main/resources/public/css 
-[site.css]:src/site/resources/public/css/site.css 
+[site.css]:src/main/resources/public/css/site.css 
 [BlogEntry]:src/main/java/com/teamtreehouse/blog/model/BlogEntry.java 
 [Comment]:src/main/java/com/teamtreehouse/blog/model/Comment.java 
 [Date]:src/main/java/com/teamtreehouse/blog/model/Date.java 

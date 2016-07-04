@@ -31,7 +31,10 @@
 * [11.] (#task-11)
     Add tags to blog entries, which enables the ability to categorize. 
     A blog entry can exist with no tags, or have multiple tags.
+* [12.] (#task-12)
+    Add the ability to delete a blog entry.
 <hr>
+ 
 
 [resources]:src/main/resources 
 [templates]:src/main/resources/templates
@@ -176,6 +179,7 @@
     [site.css].
 <hr>
 ### Extra Credit
+<hr>
 11. <a id="task-11"></a>
     Add tags to blog entries, which enables the ability to categorize. 
     A blog entry can exist with no tags, or have multiple tags.
@@ -193,5 +197,15 @@
     slugified, to be converted to valid link, so that we can later
     access entries with tags, like /entries/tags/{slug-from-tag}. This
     is not yet realized in current version.
+<hr>
+12. <a id="task-12"></a>
+    Add the ability to delete a blog entry.
+    <hr>
+    Entry can be removed from edit page, using 
+    `get("/entries/remove/")` request. It is a get request, because we
+    don't need any information from user. I added remove button, changed
+    styling a bit, for it to fit. It is password protected action, so 
+    that if we don't have cookie with name "password" and name "admin",
+    this action is prohibited.
 <hr>
     

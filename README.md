@@ -33,6 +33,9 @@
     A blog entry can exist with no tags, or have multiple tags.
 * [12.] (#task-12)
     Add the ability to delete a blog entry.
+* [13.] (#task-13)
+    Issue a cookie upon entering the password, and check for it upon 
+    adding or editing a post.
 <hr>
  
 
@@ -208,4 +211,9 @@
     that if we don't have cookie with name "password" and name "admin",
     this action is prohibited.
 <hr>
+13. <a id="task-13"></a>
+    Issue a cookie upon entering the password, and check for it upon 
+    adding or editing a post.
+    <hr>
+    See [Task 8](#task-8)
     

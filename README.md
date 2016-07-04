@@ -36,7 +36,7 @@
 [resources]:src/main/resources 
 [templates]:src/main/resources/templates
 [css]:src/main/resources/public/css 
-[main.css]:src/main/resources/public/css/main.css 
+[site.css]:src/site/resources/public/css/site.css 
 [BlogEntry]:src/main/java/com/teamtreehouse/blog/model/BlogEntry.java 
 [Comment]:src/main/java/com/teamtreehouse/blog/model/Comment.java 
 [Date]:src/main/java/com/teamtreehouse/blog/model/Date.java 
@@ -173,7 +173,7 @@
     colors, body colors.
     <hr>
     Provided CSS files are used, with couple of small additions, see
-    [main.css].
+    [site.css].
 <hr>
 ### Extra Credit
 11. <a id="task-11"></a>

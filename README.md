@@ -139,7 +139,7 @@
     entry, go home, "contact us" and "terms", are also here, just like 
     at home page
 <hr>
-8. <a id="task-7"></a>
+8. <a id="task-8"></a>
     Create a password page that requires a user to provide 'admin' 
     as the username. This page should display before adding or 
     editing a comment if there is no cookie present that has the 

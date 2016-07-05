@@ -5,6 +5,7 @@
 ### Installation instructions
 * [Eclipse installation instructions.] (#eclipse)
 <hr>
+
 ### Tasks
 * [1.] (#task-1) Use supplied mockup files to build personal blog.
 * [2.] (#task-2) In IntelliJ IDEA, create a Gradle project. Add all 

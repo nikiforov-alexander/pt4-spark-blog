@@ -2,8 +2,10 @@ group 'com.teamtreehouse.blog'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
+// uncomment when import in eclipse
+// apply plugin: 'eclipse'
 
-sourceCompatibility = 1.8
+//sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()

@@ -17,7 +17,10 @@ import java.util.Map;
 
 public class Main {
     protected static SimpleBlogEntryDAO mSimpleBlogEntryDAO;
-    public static String mSessionId;
+    private static String sSessionId;
+    protected static String getSessionId() {
+        return sSessionId;
+    }
 
     private static BlogEntry createTestBlogEntryWithComments(
             String blogTitle,
@@ -77,7 +80,7 @@ public class Main {
                         "/entries/save/*"};
         Filter filter = (request, response) -> {
             request.session().attribute("protected-page",request.uri());
-            mSessionId = request.session().id();
+            sSessionId = request.session().id();
             if (request.cookie("password") == null
                     || !request.cookie("password").equals(masterPassword)) {
                response.redirect("/password");

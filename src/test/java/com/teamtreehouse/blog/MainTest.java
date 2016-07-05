@@ -209,7 +209,7 @@ public class MainTest {
         ApiResponse apiResponse = mApiClient.request("POST",
                 "/password",
                 "password=" + mRightPassword,
-                "password=" + mRightPassword + "; JSESSIONID=" + Main.mSessionId);
+                "password=" + mRightPassword + "; JSESSIONID=" + Main.getSessionId());
         // When user tries type right password, making POST request at
         // password page
         // Then home page is returned back

@@ -2,6 +2,10 @@
 ### Blog with Spark
 <hr>
 ### Table of Contents
+### Installation instructions
+* [Eclipse installation instructions.] (#eclipse)
+<hr>
+### Tasks
 * [1.] (#task-1) Use supplied mockup files to build personal blog.
 * [2.] (#task-2) In IntelliJ IDEA, create a Gradle project. Add all 
         required Spark dependencies, and create the directory and package 
@@ -36,7 +40,6 @@
 * [13.] (#task-13)
     Issue a cookie upon entering the password, and check for it upon 
     adding or editing a post.
-<hr>
  
 
 [resources]:src/main/resources 
@@ -49,6 +52,33 @@
 [BlogDao]:src/main/java/com/teamtreehouse/blog/dao/BlogDao.java
 [SimpleBlogEntryDAO]:src/main/java/com/teamtreehouse/blog/dao/SimpleBlogEntryDAO.java 
 [NotFoundException]:src/main/java/com/teamtreehouse/blog/exception/NotFoundException.java 
+### Eclipse Installation instructions
+<hr> <a id="eclipse"></a>
+    I generated necessary `.classpath`, `.project` and 
+    `blog.userlibraires`
+    files with IntellijIdea. I also made a video how I imported my
+    project to my home Kubuntu 14.04 laptop with Eclipse Mars 1:
+    https://www.youtube.com/watch?v=7ygSsvATNpQ
+    I will provide instructions here, and hopefully with this video
+    and instructions it will be possible to import project to Mac 
+    Eclipse. NOTE: I have gradle buildship plugin installed in Eclipse: 
+    
+1.  In opened Eclipse app, I go File -> Import -> Gradle Project
+2.  Pick up a project downloaded from GitHub
+3.  Follow default necessary steps until the end.
+4.  I also make sure Gradle is using right JDK.
+5.  Then I configure Source folders on build path, leaving 
+    only two, see video.
+6.  Then I uncomment `apply plugin 'eclipse'` in `build.gradle`
+7.  After that I go to project root directory, make `gradlew` executable
+8.  Run `gradlew clean`, `gradlew eclipse`
+9.  After that I go to properties of project, to Build Path
+10. There I mark select all, to import all jars from dependencies in
+    Gradle
+11. Say yes to warning.
+12. Then run Main method.
+
+<hr>
 ### Tasks
 1.  <a id="task-1"></a>
     Use the supplied mockup files to build a personal blog.

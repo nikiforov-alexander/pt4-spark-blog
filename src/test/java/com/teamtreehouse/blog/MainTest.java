@@ -197,22 +197,27 @@ public class MainTest {
                         "/password","password=password"));
     }
 
-//    // test doesn't work because session is not saved, apparently we
-//    // have to use WebSocket maybe ... ?
-//    @Test
-//    public void givingRightPasswordRedirectsBackToPageWhereHeAskedFor()
-//            throws Exception {
-//        // Given no cookies with password, and session with new page
-//        // set after get request sent to page with new entries
-//        mApiClient.request("GET", "/entries/new");
-//        // When user tries type right password, making POST request at
-//        // password page
-//        // Then home page is returned back
-//        assertEquals(
-//                getHtmlOfPageWithHbsWithNullModel("new.hbs"),
-//                getResponseBodyOfPostRequestWithoutPasswordCookie(
-//                        "/password","password=" + mRightPassword));
-//    }
+    // test does not work because session is not saved in filter method,
+    // however, line with redirect to protected page in post("/password/page")
+    // is there
+    @Test
+    public void givingRightPasswordRedirectsBackToPageWhereHeAskedFor()
+            throws Exception {
+        // Given no cookies with password, and session with new page
+        // set after get request sent to page with new entries
+        mApiClient.request("GET", "/entries/new");
+        ApiResponse apiResponse = mApiClient.request("POST",
+                "/password",
+                "password=" + mRightPassword,
+                "password=" + mRightPassword + "; JSESSIONID=" + Main.mSessionId);
+        // When user tries type right password, making POST request at
+        // password page
+        // Then home page is returned back
+        assertEquals(
+                getHtmlOfPageWithHbsWithNullModel("password.hbs"),
+                apiResponse.getBody()
+                );
+    }
 
 
     @Test

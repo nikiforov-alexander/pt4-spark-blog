@@ -6,10 +6,10 @@ import com.teamtreehouse.blog.exception.NotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SimpleBlogEntryDAO implements BlogDao {
+public class SimpleBlogDao implements BlogDao {
     private List<BlogEntry> mBlogEntries;
 
-    public SimpleBlogEntryDAO() {
+    public SimpleBlogDao() {
        mBlogEntries = new ArrayList<>();
     }
 

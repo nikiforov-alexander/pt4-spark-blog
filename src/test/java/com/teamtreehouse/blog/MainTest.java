@@ -1,6 +1,7 @@
 package com.teamtreehouse.blog;
 
 import com.teamtreehouse.blog.model.BlogEntry;
+import com.teamtreehouse.blog.model.Comment;
 import com.teamtreehouse.blog.testing.ApiClient;
 import com.teamtreehouse.blog.testing.ApiResponse;
 import org.junit.*;
@@ -261,6 +262,29 @@ public class MainTest {
                 apiResponse.getBody()
         );
 
+    }
+    @Test
+    public void postToEntriesDetailsExistingPageTryingToCreateAnonymousCommentReturnsDetailPageWithNewComment()
+            throws Exception {
+        // Given no cookies with password, no sessions, dao with three
+        // test entries
+        // When we make POST request to detail page, to create comment
+        // with empty author name and non-empty body
+        BlogEntry firstBlogEntry =
+                Main.mSimpleBlogEntryDAO.findAllEntries().get(0);
+        ApiResponse apiResponse =
+                mApiClient.request("POST",
+                        "/entries/detail/"
+                                + firstBlogEntry.getHashId() +
+                                "/" + firstBlogEntry.getSlugFromTitle(),
+                        "name=&body=body");
+        // Then author name of last added comment should be "Anonymous"
+        firstBlogEntry =
+                Main.mSimpleBlogEntryDAO.findAllEntries().get(0);
+        int indexOfLastComment = firstBlogEntry.getComments().size() - 1;
+        Comment lastComment = firstBlogEntry
+                .getComments().get(indexOfLastComment);
+        assertEquals("Anonymous", lastComment.getAuthor());
     }
     @Test
     public void postToEntriesDetailsExistingPageTryingToCreateCommentReturnsDetailPageWithNewComment()

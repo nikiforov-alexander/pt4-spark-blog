@@ -1,7 +1,7 @@
 package com.teamtreehouse.blog;
 
-import com.teamtreehouse.blog.dao.SimpleBlogDao;
-import com.teamtreehouse.blog.dao.SimpleEntryDao;
+import com.teamtreehouse.blog.dao.Sql2oBlogDao;
+import com.teamtreehouse.blog.dao.Sql2oEntryDao;
 import com.teamtreehouse.blog.exception.ApiError;
 import com.teamtreehouse.blog.exception.NotFoundException;
 import com.teamtreehouse.blog.model.BlogEntry;
@@ -15,13 +15,13 @@ import java.util.Map;
 import static spark.Spark.*;
 
 public class Main {
-    private static SimpleBlogDao sSimpleBlogDao;
-    protected static SimpleBlogDao getSimpleBlogDao() {
-        return sSimpleBlogDao;
+    private static Sql2oBlogDao sSql2oBlogDao;
+    protected static Sql2oBlogDao getSimpleBlogDao() {
+        return sSql2oBlogDao;
     }
-    private static SimpleEntryDao sSimpleEntryDao;
-    protected static SimpleEntryDao getSimpleEntryDao() {
-        return sSimpleEntryDao;
+    private static Sql2oEntryDao sSql2OEntryDao;
+    protected static Sql2oEntryDao getSimpleEntryDao() {
+        return sSql2OEntryDao;
     }
 
     private static String sSessionId;
@@ -38,16 +38,16 @@ public class Main {
 //        return testBlogEntry;
 //    }
 //    private static void fillDaoWithThreeTestEntries() {
-//        sSimpleBlogDao.addEntry(createTestBlogEntryWithComments(
+//        sSql2oBlogDao.addEntry(createTestBlogEntryWithComments(
 //               "Title1", "Body1", "tag1 tag2"
 //        ));
-//        sSimpleEntryDao.addComment(
-//                new Comment(sSimpleBlogDao.findEntryByHashId())
+//        sSql2OEntryDao.addComment(
+//                new Comment(sSql2oBlogDao.findEntryByHashId())
 //        )
-//        sSimpleBlogDao.addEntry(createTestBlogEntryWithComments(
+//        sSql2oBlogDao.addEntry(createTestBlogEntryWithComments(
 //                "Title2", "Body2", "Comment2", new Date(2L), "Author2", "tag2"
 //        ));
-//        sSimpleBlogDao.addEntry(createTestBlogEntryWithComments(
+//        sSql2oBlogDao.addEntry(createTestBlogEntryWithComments(
 //                "Title3", "Body3", "Comment3", new Date(3L), "Author3", "tag3"
 //        ));
 //    }
@@ -69,10 +69,10 @@ public class Main {
         String notFoundMessage = "No such entry found";
         // I also use external static dao for testing, it is not the best way
         // I know, but in the absence of database I see no other way
-        sSimpleBlogDao = new SimpleBlogDao();
-//        sSimpleEntryDao = new SimpleEntryDao(sSimpleBlogDao);
+        sSql2oBlogDao = new Sql2oBlogDao();
+//        sSql2OEntryDao = new Sql2oEntryDao(sSql2oBlogDao);
 //        fillDaoWithThreeTestEntries();
-        SimpleBlogDao simpleBlogDao = sSimpleBlogDao;
+        Sql2oBlogDao sql2oBlogDao = sSql2oBlogDao;
         // test dao setup
         // redirect user to password page if cookie password is null, or
         // set to anything other than master password. Session attribute is
@@ -123,7 +123,7 @@ public class Main {
         // main page with blog entries
         get("/",(request, response) -> {
             Map<String,Object> model = new HashMap<>();
-            model.put("entries", simpleBlogDao.findAllEntries());
+            model.put("entries", sql2oBlogDao.findAllEntries());
             return new ModelAndView(model, "index.hbs");
         }, new HandlebarsTemplateEngine());
 
@@ -137,7 +137,7 @@ public class Main {
             BlogEntry blogEntry;
             try {
                 blogEntry =
-                        simpleBlogDao.findEntryByHashId(hashId);
+                        sql2oBlogDao.findEntryByHashId(hashId);
             } catch (NotFoundException nfe) {
                 throw new ApiError(404, notFoundMessage);
             }
@@ -155,7 +155,7 @@ public class Main {
             // try to find blog entry
             BlogEntry blogEntry;
             try {
-                blogEntry = simpleBlogDao.findEntryByHashId(hashId);
+                blogEntry = sql2oBlogDao.findEntryByHashId(hashId);
             } catch (NotFoundException notFoundException) {
                 throw new ApiError(404, notFoundMessage);
             }
@@ -188,7 +188,7 @@ public class Main {
             BlogEntry newBlogEntry = new BlogEntry(newTitle, newBody);
             // because our entries are unique (equals includes Date), no checks
             // here
-            simpleBlogDao.addEntry(newBlogEntry);
+            sql2oBlogDao.addEntry(newBlogEntry);
             response.status(201);
             response.redirect("/");
             return null;
@@ -202,7 +202,7 @@ public class Main {
             BlogEntry blogEntry;
             try {
                 blogEntry =
-                        simpleBlogDao.findEntryByHashId(hashId);
+                        sql2oBlogDao.findEntryByHashId(hashId);
             } catch (NotFoundException nfe) {
                 throw new ApiError(404, notFoundMessage);
             }
@@ -222,7 +222,7 @@ public class Main {
             BlogEntry oldBlogEntry;
             try {
                 oldBlogEntry =
-                        simpleBlogDao.findEntryByHashId(hashId);
+                        sql2oBlogDao.findEntryByHashId(hashId);
             } catch (NotFoundException nfe) {
                 throw new ApiError(404, notFoundMessage);
             }
@@ -234,8 +234,8 @@ public class Main {
             // even if user didn't change anything, because he pushed edit,
             // entry will have new creation date, the simplest way was, as I
             // thought is to remove and add new entry to DAO
-            simpleBlogDao.removeEntry(oldBlogEntry);
-            simpleBlogDao.addEntry(newBlogEntry);
+            sql2oBlogDao.removeEntry(oldBlogEntry);
+            sql2oBlogDao.addEntry(newBlogEntry);
             // save new title and entry
             response.redirect("/");
             return null;
@@ -247,12 +247,12 @@ public class Main {
             // get old blog entry by slug
             BlogEntry blogEntry;
             try {
-                blogEntry = simpleBlogDao.findEntryByHashId(hashId);
+                blogEntry = sql2oBlogDao.findEntryByHashId(hashId);
             } catch (NotFoundException nfe) {
                 throw new ApiError(404, notFoundMessage);
             }
             // remove entry from dao
-            simpleBlogDao.removeEntry(blogEntry);
+            sql2oBlogDao.removeEntry(blogEntry);
             // redirect to home page
             response.redirect("/");
             return null;

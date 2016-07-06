@@ -131,7 +131,7 @@ public class Main {
             BlogEntry blogEntry;
             try {
                 blogEntry =
-                        simpleBlogDao.findEntryBySlug(hashId);
+                        simpleBlogDao.findEntryByHashId(hashId);
             } catch (NotFoundException nfe) {
                 throw new ApiError(404, notFoundMessage);
             }
@@ -149,7 +149,7 @@ public class Main {
             // try to find blog entry
             BlogEntry blogEntry;
             try {
-                blogEntry = simpleBlogDao.findEntryBySlug(hashId);
+                blogEntry = simpleBlogDao.findEntryByHashId(hashId);
             } catch (NotFoundException notFoundException) {
                 throw new ApiError(404, notFoundMessage);
             }
@@ -197,7 +197,7 @@ public class Main {
             BlogEntry blogEntry;
             try {
                 blogEntry =
-                        simpleBlogDao.findEntryBySlug(hashId);
+                        simpleBlogDao.findEntryByHashId(hashId);
             } catch (NotFoundException nfe) {
                 throw new ApiError(404, notFoundMessage);
             }
@@ -217,7 +217,7 @@ public class Main {
             BlogEntry oldBlogEntry;
             try {
                 oldBlogEntry =
-                        simpleBlogDao.findEntryBySlug(hashId);
+                        simpleBlogDao.findEntryByHashId(hashId);
             } catch (NotFoundException nfe) {
                 throw new ApiError(404, notFoundMessage);
             }
@@ -245,7 +245,7 @@ public class Main {
             // get old blog entry by slug
             BlogEntry blogEntry;
             try {
-                blogEntry = simpleBlogDao.findEntryBySlug(hashId);
+                blogEntry = simpleBlogDao.findEntryByHashId(hashId);
             } catch (NotFoundException nfe) {
                 throw new ApiError(404, notFoundMessage);
             }

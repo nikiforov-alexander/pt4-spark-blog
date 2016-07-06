@@ -16,7 +16,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Main {
-    protected static SimpleBlogDao mSimpleBlogDao;
+    private static SimpleBlogDao mSimpleBlogDao;
+    protected static SimpleBlogDao getSimpleBlogDao() {
+        return mSimpleBlogDao;
+    }
+
     private static String sSessionId;
     protected static String getSessionId() {
         return sSessionId;

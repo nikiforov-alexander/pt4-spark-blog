@@ -156,6 +156,9 @@ public class Main {
             // create new comment title(non-null, see new.hbs) and body
             String authorName = request.queryParams("name");
             String body = request.queryParams("body");
+            if (authorName.isEmpty()) {
+                authorName = "Anonymous";
+            }
             Comment comment = new Comment(body, authorName);
             // no check here because its hard to make comments same, unless
             // they are done in the same second, which is impossible in real

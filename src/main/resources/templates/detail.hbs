@@ -7,14 +7,14 @@
                     <time datetime={{ entry.htmlCreationDate }}>
                         {{ entry.creationDateString }}
                     </time>
-                    {{#each tags}}
-                        <a href="#" class="tag">#{{ this }}</a>
-                    {{/each}}
+                    <!--{{#each tags}}-->
+                        <!--<a href="#" class="tag">#{{ this }}</a>-->
+                    <!--{{/each}}-->
                     <div class="entry">
                         <p>{{ entry.body }}</p>
                         <p>
                             <a class="link"
-                               href="/entries/edit/{{ entry.hashId }}/{{ entry.slugFromTitle }}">
+                               href="/entries/edit/{{ entry.id }}/{{ entry.slugFromTitle }}">
                             Edit Entry</a>
                         </p>
                     </div>
@@ -35,7 +35,7 @@
                 </div>
             {{/each}}
             <div class="new-comment">
-                <form method="post" name="/entries/detail/{{ entry.hashId }}/{{ entry.slugFromTitle }}">
+                <form method="post" name="/entries/detail/{{ entry.id }}/{{ entry.slugFromTitle }}">
                     <!--
                         Now author name is not required. When user doesn't
                         include his name, Anonymous user name is set

@@ -16,9 +16,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Main {
-    private static SimpleBlogDao mSimpleBlogDao;
+    private static SimpleBlogDao sSimpleBlogDao;
     protected static SimpleBlogDao getSimpleBlogDao() {
-        return mSimpleBlogDao;
+        return sSimpleBlogDao;
     }
 
     private static String sSessionId;
@@ -40,13 +40,13 @@ public class Main {
         return testBlogEntry;
     }
     private static void fillDaoWithThreeTestEntries() {
-        mSimpleBlogDao.addEntry(createTestBlogEntryWithComments(
+        sSimpleBlogDao.addEntry(createTestBlogEntryWithComments(
                "Title1", "Body1", "Comment1", new Date(1L), "Author1", "tag1 tag2"
         ));
-        mSimpleBlogDao.addEntry(createTestBlogEntryWithComments(
+        sSimpleBlogDao.addEntry(createTestBlogEntryWithComments(
                 "Title2", "Body2", "Comment2", new Date(2L), "Author2", "tag2"
         ));
-        mSimpleBlogDao.addEntry(createTestBlogEntryWithComments(
+        sSimpleBlogDao.addEntry(createTestBlogEntryWithComments(
                 "Title3", "Body3", "Comment3", new Date(3L), "Author3", "tag3"
         ));
     }
@@ -68,9 +68,9 @@ public class Main {
         String notFoundMessage = "No such entry found";
         // I also use external static dao for testing, it is not the best way
         // I know, but in the absence of database I see no other way
-        mSimpleBlogDao = new SimpleBlogDao();
+        sSimpleBlogDao = new SimpleBlogDao();
         fillDaoWithThreeTestEntries();
-        SimpleBlogDao simpleBlogDao = mSimpleBlogDao;
+        SimpleBlogDao simpleBlogDao = sSimpleBlogDao;
         // test dao setup
         // redirect user to password page if cookie password is null, or
         // set to anything other than master password. Session attribute is

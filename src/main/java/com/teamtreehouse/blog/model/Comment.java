@@ -1,7 +1,7 @@
 package com.teamtreehouse.blog.model;
 
 public class Comment {
-    // entry id
+    // entry mId
     private int mEntryId;
     public int getEntryId() {
         return mEntryId;
@@ -10,13 +10,13 @@ public class Comment {
         mEntryId = entryId;
     }
 
-    // comment id, unique
-    private int id;
+    // comment mId, unique
+    private int mId;
     public int getId() {
-        return id;
+        return mId;
     }
     public void setId(int id) {
-        this.id = id;
+        this.mId = id;
     }
 
     // body of a comment, required field in form

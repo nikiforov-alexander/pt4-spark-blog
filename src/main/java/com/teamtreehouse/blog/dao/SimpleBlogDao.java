@@ -24,7 +24,8 @@ public class SimpleBlogDao implements BlogDao {
     }
 
     @Override
-    public BlogEntry findEntryByHashId(String hashId) {
+    public BlogEntry findEntryByHashId(String hashId)
+            throws NotFoundException {
         return mBlogEntries.stream()
                 .filter(blogEntry -> blogEntry.getHashId().equals(hashId))
                 .findFirst()

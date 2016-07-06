@@ -2,7 +2,7 @@ package com.teamtreehouse.blog;
 
 import static spark.Spark.*;
 
-import com.teamtreehouse.blog.dao.SimpleBlogEntryDAO;
+import com.teamtreehouse.blog.dao.SimpleBlogDao;
 import com.teamtreehouse.blog.exception.ApiError;
 import com.teamtreehouse.blog.exception.NotFoundException;
 import com.teamtreehouse.blog.model.BlogEntry;
@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Main {
-    protected static SimpleBlogEntryDAO mSimpleBlogEntryDAO;
+    protected static SimpleBlogDao mSimpleBlogDao;
     private static String sSessionId;
     protected static String getSessionId() {
         return sSessionId;
@@ -36,13 +36,13 @@ public class Main {
         return testBlogEntry;
     }
     private static void fillDaoWithThreeTestEntries() {
-        mSimpleBlogEntryDAO.addEntry(createTestBlogEntryWithComments(
+        mSimpleBlogDao.addEntry(createTestBlogEntryWithComments(
                "Title1", "Body1", "Comment1", new Date(1L), "Author1", "tag1 tag2"
         ));
-        mSimpleBlogEntryDAO.addEntry(createTestBlogEntryWithComments(
+        mSimpleBlogDao.addEntry(createTestBlogEntryWithComments(
                 "Title2", "Body2", "Comment2", new Date(2L), "Author2", "tag2"
         ));
-        mSimpleBlogEntryDAO.addEntry(createTestBlogEntryWithComments(
+        mSimpleBlogDao.addEntry(createTestBlogEntryWithComments(
                 "Title3", "Body3", "Comment3", new Date(3L), "Author3", "tag3"
         ));
     }
@@ -64,9 +64,9 @@ public class Main {
         String notFoundMessage = "No such entry found";
         // I also use external static dao for testing, it is not the best way
         // I know, but in the absence of database I see no other way
-        mSimpleBlogEntryDAO = new SimpleBlogEntryDAO();
+        mSimpleBlogDao = new SimpleBlogDao();
         fillDaoWithThreeTestEntries();
-        SimpleBlogEntryDAO simpleBlogEntryDAO = mSimpleBlogEntryDAO;
+        SimpleBlogDao simpleBlogDao = mSimpleBlogDao;
         // test dao setup
         // redirect user to password page if cookie password is null, or
         // set to anything other than master password. Session attribute is
@@ -117,7 +117,7 @@ public class Main {
         // main page with blog entries
         get("/",(request, response) -> {
             Map<String,Object> model = new HashMap<>();
-            model.put("entries",simpleBlogEntryDAO.findAllEntries());
+            model.put("entries", simpleBlogDao.findAllEntries());
             return new ModelAndView(model, "index.hbs");
         }, new HandlebarsTemplateEngine());
 
@@ -131,7 +131,7 @@ public class Main {
             BlogEntry blogEntry;
             try {
                 blogEntry =
-                        simpleBlogEntryDAO.findEntryBySlug(hashId);
+                        simpleBlogDao.findEntryBySlug(hashId);
             } catch (NotFoundException nfe) {
                 throw new ApiError(404, notFoundMessage);
             }
@@ -149,7 +149,7 @@ public class Main {
             // try to find blog entry
             BlogEntry blogEntry;
             try {
-                blogEntry = simpleBlogEntryDAO.findEntryBySlug(hashId);
+                blogEntry = simpleBlogDao.findEntryBySlug(hashId);
             } catch (NotFoundException notFoundException) {
                 throw new ApiError(404, notFoundMessage);
             }
@@ -183,7 +183,7 @@ public class Main {
             BlogEntry newBlogEntry = new BlogEntry(newTitle, newBody, newTags);
             // because our entries are unique (equals includes Date), no checks
             // here
-            simpleBlogEntryDAO.addEntry(newBlogEntry);
+            simpleBlogDao.addEntry(newBlogEntry);
             response.status(201);
             response.redirect("/");
             return null;
@@ -197,7 +197,7 @@ public class Main {
             BlogEntry blogEntry;
             try {
                 blogEntry =
-                        simpleBlogEntryDAO.findEntryBySlug(hashId);
+                        simpleBlogDao.findEntryBySlug(hashId);
             } catch (NotFoundException nfe) {
                 throw new ApiError(404, notFoundMessage);
             }
@@ -217,7 +217,7 @@ public class Main {
             BlogEntry oldBlogEntry;
             try {
                 oldBlogEntry =
-                        simpleBlogEntryDAO.findEntryBySlug(hashId);
+                        simpleBlogDao.findEntryBySlug(hashId);
             } catch (NotFoundException nfe) {
                 throw new ApiError(404, notFoundMessage);
             }
@@ -232,8 +232,8 @@ public class Main {
             // even if user didn't change anything, because he pushed edit,
             // entry will have new creation date, the simplest way was, as I
             // thought is to remove and add new entry to DAO
-            simpleBlogEntryDAO.removeEntry(oldBlogEntry);
-            simpleBlogEntryDAO.addEntry(newBlogEntry);
+            simpleBlogDao.removeEntry(oldBlogEntry);
+            simpleBlogDao.addEntry(newBlogEntry);
             // save new title and entry
             response.redirect("/");
             return null;
@@ -245,12 +245,12 @@ public class Main {
             // get old blog entry by slug
             BlogEntry blogEntry;
             try {
-                blogEntry = simpleBlogEntryDAO.findEntryBySlug(hashId);
+                blogEntry = simpleBlogDao.findEntryBySlug(hashId);
             } catch (NotFoundException nfe) {
                 throw new ApiError(404, notFoundMessage);
             }
             // remove entry from dao
-            simpleBlogEntryDAO.removeEntry(blogEntry);
+            simpleBlogDao.removeEntry(blogEntry);
             // redirect to home page
             response.redirect("/");
             return null;

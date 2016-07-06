@@ -144,7 +144,7 @@ public class Main {
                 throw new ApiError(404, notFoundMessage);
             }
             model.put("entry", blogEntry);
-            model.put("comments", blogEntry.getComments());
+//            model.put("comments", blogEntry.getComments());
 //            model.put("tags", blogEntry.getTags());
             return new ModelAndView(model, "detail.hbs");
         }, new HandlebarsTemplateEngine());
@@ -187,8 +187,7 @@ public class Main {
             // create new blog entry with title(non-null, see new.hbs) and body
             String newTitle = request.queryParams("title");
             String newBody = request.queryParams("body");
-            String newTags = request.queryParams("tags");
-            BlogEntry newBlogEntry = new BlogEntry(newTitle, newBody, newTags);
+            BlogEntry newBlogEntry = new BlogEntry(newTitle, newBody);
             // because our entries are unique (equals includes Date), no checks
             // here
             simpleBlogDao.addEntry(newBlogEntry);
@@ -233,10 +232,7 @@ public class Main {
             String newTitle = request.queryParams("title");
             String newBody = request.queryParams("body");
             String newTags = request.queryParams("tags");
-            BlogEntry newBlogEntry = new BlogEntry(newTitle,
-                    newBody,
-                    oldBlogEntry.getComments(),
-                    newTags);
+            BlogEntry newBlogEntry = new BlogEntry(newTitle, newTags);
             // even if user didn't change anything, because he pushed edit,
             // entry will have new creation date, the simplest way was, as I
             // thought is to remove and add new entry to DAO

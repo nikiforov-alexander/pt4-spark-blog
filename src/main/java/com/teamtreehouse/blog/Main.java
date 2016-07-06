@@ -1,20 +1,18 @@
 package com.teamtreehouse.blog;
 
-import static spark.Spark.*;
-
 import com.teamtreehouse.blog.dao.SimpleBlogDao;
 import com.teamtreehouse.blog.dao.SimpleEntryDao;
 import com.teamtreehouse.blog.exception.ApiError;
 import com.teamtreehouse.blog.exception.NotFoundException;
 import com.teamtreehouse.blog.model.BlogEntry;
-import com.teamtreehouse.blog.model.Comment;
-import com.teamtreehouse.blog.model.Date;
 import spark.Filter;
 import spark.ModelAndView;
 import spark.template.handlebars.HandlebarsTemplateEngine;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static spark.Spark.*;
 
 public class Main {
     private static SimpleBlogDao sSimpleBlogDao;

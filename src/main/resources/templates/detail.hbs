@@ -36,16 +36,17 @@
             {{/each}}
             <div class="new-comment">
                 <form method="post" name="/entries/detail/{{ entry.hashId }}/{{ entry.slugFromTitle }}">
-                    <label for="name"> Name</label>
                     <!--
-                        added required attribute, so that fields are not empty
+                        Now author name is not required. When user doesn't
+                        include his name, Anonymous user name is set
                     -->
-                    <input type="text" name="name" required><br>
-                    <label for="comment">Comment</label>
+                    <label for="name"> Name</label>
+                    <input type="text" name="name"><br>
                     <!--
                         changed name attr to "body" for convenience
                         added required attribute, so that fields are not empty
                     -->
+                    <label for="comment">Comment</label>
                     <textarea rows="5" name="body" required></textarea>
                     <input type="submit" value="Post Comment" class="button">
                 </form>

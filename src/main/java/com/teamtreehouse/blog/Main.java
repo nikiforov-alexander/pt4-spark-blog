@@ -5,12 +5,14 @@ import com.teamtreehouse.blog.dao.Sql2oEntryDao;
 import com.teamtreehouse.blog.exception.ApiError;
 import com.teamtreehouse.blog.exception.NotFoundException;
 import com.teamtreehouse.blog.model.BlogEntry;
+import org.sql2o.Sql2o;
 import spark.Filter;
 import spark.ModelAndView;
 import spark.template.handlebars.HandlebarsTemplateEngine;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.StringJoiner;
 
 import static spark.Spark.*;
 
@@ -53,14 +55,16 @@ public class Main {
 //    }
 
     public static void main(String[] args) {
+        String dataSource = "jdbc:h2:~/spark-blog.db";
         // used in testing of Api
         if (args.length > 0 ) {
-            if (args.length != 1) {
-                System.out.println("java Api <port>");
+            if (args.length != 2) {
+                System.out.println("java Api <port> <dataSource>");
                 System.exit(1);
             }
             // no checks here for args, we run this with args in testing
             port(Integer.parseInt(args[0]));
+            dataSource = args[1];
         }
         staticFileLocation("/public");
         // our master password, the worst security ever :)
@@ -69,7 +73,12 @@ public class Main {
         String notFoundMessage = "No such entry found";
         // I also use external static dao for testing, it is not the best way
         // I know, but in the absence of database I see no other way
-        sSql2oBlogDao = new Sql2oBlogDao();
+        String connectionString = String.format(
+                "%s;INIT=RUNSCRIPT from 'classpath:db/init.sql'",
+                dataSource);
+        Sql2o sql2o = new Sql2o(connectionString, "", "");
+        sSql2oBlogDao = new Sql2oBlogDao(sql2o);
+        sSql2OEntryDao = new Sql2oEntryDao();
 //        sSql2OEntryDao = new Sql2oEntryDao(sSql2oBlogDao);
 //        fillDaoWithThreeTestEntries();
         Sql2oBlogDao sql2oBlogDao = sSql2oBlogDao;

@@ -5,6 +5,14 @@ import com.github.slugify.Slugify;
 import java.io.IOException;
 
 public class BlogEntry {
+    // primary key in database
+    private int mId;
+    public int getId() {
+        return mId;
+    }
+    public void setId(int id) {
+        mId = id;
+    }
 
     // Body of blog entry
     private String mBody;

@@ -13,8 +13,6 @@ public class SimpleBlogDao implements BlogDao {
        mBlogEntries = new ArrayList<>();
     }
 
-
-
     @Override
     public boolean addEntry(BlogEntry blogEntry) {
         return mBlogEntries.add(blogEntry);
@@ -26,9 +24,9 @@ public class SimpleBlogDao implements BlogDao {
     }
 
     @Override
-    public BlogEntry findEntryBySlug(String slug) {
+    public BlogEntry findEntryByHashId(String hashId) {
         return mBlogEntries.stream()
-                .filter(blogEntry -> blogEntry.getHashId().equals(slug))
+                .filter(blogEntry -> blogEntry.getHashId().equals(hashId))
                 .findFirst()
                 .orElseThrow(NotFoundException::new);
     }

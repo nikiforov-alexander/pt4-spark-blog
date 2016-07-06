@@ -6,10 +6,10 @@ import com.teamtreehouse.blog.exception.NotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SimpleBlogDao implements BlogDao {
+public class Sql2oBlogDao implements BlogDao {
     private List<BlogEntry> mBlogEntries;
 
-    public SimpleBlogDao() {
+    public Sql2oBlogDao() {
        mBlogEntries = new ArrayList<>();
     }
 
@@ -26,10 +26,7 @@ public class SimpleBlogDao implements BlogDao {
     @Override
     public BlogEntry findEntryByHashId(String hashId)
             throws NotFoundException {
-        return mBlogEntries.stream()
-                .filter(blogEntry -> blogEntry.getHashId().equals(hashId))
-                .findFirst()
-                .orElseThrow(NotFoundException::new);
+        return null;
     }
 
     @Override

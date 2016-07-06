@@ -3,6 +3,7 @@ package com.teamtreehouse.blog;
 import static spark.Spark.*;
 
 import com.teamtreehouse.blog.dao.SimpleBlogDao;
+import com.teamtreehouse.blog.dao.SimpleEntryDao;
 import com.teamtreehouse.blog.exception.ApiError;
 import com.teamtreehouse.blog.exception.NotFoundException;
 import com.teamtreehouse.blog.model.BlogEntry;
@@ -20,36 +21,38 @@ public class Main {
     protected static SimpleBlogDao getSimpleBlogDao() {
         return sSimpleBlogDao;
     }
+    private static SimpleEntryDao sSimpleEntryDao;
+    protected static SimpleEntryDao getSimpleEntryDao() {
+        return sSimpleEntryDao;
+    }
 
     private static String sSessionId;
     protected static String getSessionId() {
         return sSessionId;
     }
 
-    private static BlogEntry createTestBlogEntryWithComments(
-            String blogTitle,
-            String blogBody,
-            String CommentName,
-            Date CommentDate,
-            String CommentAuthor,
-            String stringWithTags) {
-        BlogEntry testBlogEntry = new BlogEntry(blogTitle, blogBody);
-        Comment comment = new Comment(CommentName, CommentDate, CommentAuthor);
-        testBlogEntry.addComment(comment);
-        testBlogEntry.slugifyTagsStringAndAddToTagsMember(stringWithTags);
-        return testBlogEntry;
-    }
-    private static void fillDaoWithThreeTestEntries() {
-        sSimpleBlogDao.addEntry(createTestBlogEntryWithComments(
-               "Title1", "Body1", "Comment1", new Date(1L), "Author1", "tag1 tag2"
-        ));
-        sSimpleBlogDao.addEntry(createTestBlogEntryWithComments(
-                "Title2", "Body2", "Comment2", new Date(2L), "Author2", "tag2"
-        ));
-        sSimpleBlogDao.addEntry(createTestBlogEntryWithComments(
-                "Title3", "Body3", "Comment3", new Date(3L), "Author3", "tag3"
-        ));
-    }
+//    private static BlogEntry createTestBlogEntryWithComments(
+//            String blogTitle,
+//            String blogBody,
+//            String stringWithTags) {
+//        BlogEntry testBlogEntry = new BlogEntry(blogTitle, blogBody);
+//        testBlogEntry.slugifyTagsStringAndAddToTagsMember(stringWithTags);
+//        return testBlogEntry;
+//    }
+//    private static void fillDaoWithThreeTestEntries() {
+//        sSimpleBlogDao.addEntry(createTestBlogEntryWithComments(
+//               "Title1", "Body1", "tag1 tag2"
+//        ));
+//        sSimpleEntryDao.addComment(
+//                new Comment(sSimpleBlogDao.findEntryByHashId())
+//        )
+//        sSimpleBlogDao.addEntry(createTestBlogEntryWithComments(
+//                "Title2", "Body2", "Comment2", new Date(2L), "Author2", "tag2"
+//        ));
+//        sSimpleBlogDao.addEntry(createTestBlogEntryWithComments(
+//                "Title3", "Body3", "Comment3", new Date(3L), "Author3", "tag3"
+//        ));
+//    }
 
     public static void main(String[] args) {
         // used in testing of Api
@@ -69,7 +72,8 @@ public class Main {
         // I also use external static dao for testing, it is not the best way
         // I know, but in the absence of database I see no other way
         sSimpleBlogDao = new SimpleBlogDao();
-        fillDaoWithThreeTestEntries();
+//        sSimpleEntryDao = new SimpleEntryDao(sSimpleBlogDao);
+//        fillDaoWithThreeTestEntries();
         SimpleBlogDao simpleBlogDao = sSimpleBlogDao;
         // test dao setup
         // redirect user to password page if cookie password is null, or
@@ -141,7 +145,7 @@ public class Main {
             }
             model.put("entry", blogEntry);
             model.put("comments", blogEntry.getComments());
-            model.put("tags", blogEntry.getTags());
+//            model.put("tags", blogEntry.getTags());
             return new ModelAndView(model, "detail.hbs");
         }, new HandlebarsTemplateEngine());
         // create new comment on entries detail page
@@ -163,11 +167,11 @@ public class Main {
             if (authorName.isEmpty()) {
                 authorName = "Anonymous";
             }
-            Comment comment = new Comment(body, authorName);
+//            Comment comment = new Comment(body, authorName);
             // no check here because its hard to make comments same, unless
             // they are done in the same second, which is impossible in real
             // we scenario, so just add comment, no check
-            blogEntry.addComment(comment);
+//            blogEntry.addComment(comment);
             // redirect back to entry detail page
             response.redirect("/entries/detail/" + hashId +
                     "/" + slugFromTitle);

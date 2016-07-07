@@ -1,5 +1,9 @@
 package com.teamtreehouse.blog.model;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Comment {
     // entry mId
     private int mEntryId;
@@ -7,7 +11,7 @@ public class Comment {
         return mEntryId;
     }
     public void setEntryId(int entryId) {
-        mEntryId = entryId;
+        this.mEntryId = entryId;
     }
 
     // comment mId, unique
@@ -32,11 +36,13 @@ public class Comment {
     private Date mDate;
     // returns String with date in html format, see Date class
     public String getHtmlCreationDate() {
-        return mDate.getHtmlCreationDate();
+        DateFormat dateFormat = new SimpleDateFormat("YYYY-MM-dd hh:mm");
+        return dateFormat.format(mDate);
     }
     // returns date in format like in original // index.html
     public String getCreationDateString() {
-        return mDate.getCreationDateString();
+        DateFormat dateFormat = new SimpleDateFormat("LLLL dd, YYYY 'at' hh:mm");
+        return dateFormat.format(mDate);
     }
     public Date getDate() {
         return mDate;
@@ -56,7 +62,7 @@ public class Comment {
 
     // Default constructor
     public Comment(int entryId, String body, Date date, String author) {
-        mEntryId = entryId;
+        this.mEntryId = entryId;
         mBody = body;
         mDate = date;
         mAuthor = author;

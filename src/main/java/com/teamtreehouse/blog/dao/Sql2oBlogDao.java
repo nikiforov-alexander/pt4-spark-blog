@@ -20,7 +20,9 @@ public class Sql2oBlogDao implements BlogDao {
     @Override
     public void addEntry(BlogEntry blogEntry) throws DaoException {
         String sqlQuery
-                = "INSERT INTO entries(title, body) VALUES (:title, :body)";
+                = "INSERT INTO " +
+                "entries(title, body, date) " +
+                "VALUES (:title, :body, :date)";
         try (Connection connection = mSql2o.open()) {
             int id = (int) connection.createQuery(sqlQuery)
                     .bind(blogEntry)

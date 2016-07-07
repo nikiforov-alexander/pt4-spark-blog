@@ -2,6 +2,10 @@ package com.teamtreehouse.blog.model;
 
 import com.github.slugify.Slugify;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import java.io.IOException;
 
 public class BlogEntry {
@@ -45,28 +49,33 @@ public class BlogEntry {
     }
 
     // Our own Date, inheriting java Date
-    private Date mCreationDate;
-    public void setCreationDate(Date creationDate) {
-        mCreationDate = creationDate;
+    private Date mDate;
+    public void setDate(Date date) {
+        mDate = date;
     }
-    public Date getCreationDate() {
-        return mCreationDate;
+    public Date getDate() {
+        return mDate;
     }
     // returns date in format accepted by HTML, tried to do like in original
-    // index.html, see Date class
+    // index.html
     public String getHtmlCreationDate() {
-        return mCreationDate.getHtmlCreationDate();
+        DateFormat dateFormat = new SimpleDateFormat("YYYY-MM-dd hh:mm");
+        return dateFormat.format(mDate);
     }
-    // returns date in format like in original index.html, see Date class
+    // returns date in format like in original index.html
     public String getCreationDateString() {
-        return mCreationDate.getCreationDateString();
+        DateFormat dateFormat = new SimpleDateFormat("LLLL dd, YYYY 'at' hh:mm");
+        return dateFormat.format(mDate);
     }
 
     // default constructor, used to create new blog entry without comments
     public BlogEntry(String title, String body) {
+        this(title, body, new Date());
+    }
+    public BlogEntry(String title, String body, Date creationDate) {
         mTitle = title;
         mBody = body;
-        mCreationDate = new Date();
+        mDate = creationDate;
     }
 
     @Override
@@ -76,20 +85,27 @@ public class BlogEntry {
 
         BlogEntry blogEntry = (BlogEntry) o;
 
-        if (mTitle != null ? !mTitle.equals(blogEntry.mTitle) : blogEntry.mTitle != null)
+        if (mId != blogEntry.mId) return false;
+        if (mBody != null ? !mBody.equals(blogEntry.mBody) : blogEntry.mBody != null)
             return false;
-        return mCreationDate != null ? mCreationDate.equals(blogEntry.mCreationDate) : blogEntry.mCreationDate == null;
+        if (!mTitle.equals(blogEntry.mTitle)) return false;
+        return mDate.equals(blogEntry.mDate);
+
     }
+
     @Override
     public int hashCode() {
-        int result = mTitle != null ? mTitle.hashCode() : 0;
-        result = 31 * result + (mCreationDate != null ? mCreationDate.hashCode() : 0);
+        int result = mId;
+        result = 31 * result + (mBody != null ? mBody.hashCode() : 0);
+        result = 31 * result + mTitle.hashCode();
+        result = 31 * result + mDate.hashCode();
         return result;
     }
+
     @Override
     public String toString() {
         return "BlogEntry { " +
-                "mCreationDate = " + mCreationDate +
+                "mDate = " + mDate +
                 ", mTitle = '" + mTitle + '\'' +
                 ", mBody = '" + mBody + '\'' +
                 " }";

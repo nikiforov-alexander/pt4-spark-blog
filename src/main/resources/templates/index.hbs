@@ -5,14 +5,14 @@
                 {{#each entries}}
                     <article>
                         <h2>
-                            <a href="/entries/detail/{{ hashId }}/{{ slugFromTitle }}">{{ title }}</a>
+                            <a href="/entries/detail/{{ id }}/{{ slugFromTitle }}">{{ title }}</a>
                         </h2>
                         <time datetime="{{ htmlCreationDate }}">
                             {{ creationDateString }}
                         </time>
-                        {{#each tags}}
-                            <a href="#">#{{ this }}</a>
-                        {{/each}}
+                        <!--{{#each tags}}-->
+                            <!--<a href="#">#{{ this }}</a>-->
+                        <!--{{/each}}-->
                     </article>
                 {{/each}}
             </div>

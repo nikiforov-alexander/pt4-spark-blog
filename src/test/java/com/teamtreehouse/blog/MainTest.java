@@ -432,6 +432,24 @@ public class MainTest {
     }
 
     @Test
+    public void savingEntryWithNewTitleOrBodySavesComments() throws Exception {
+        // Given cookie with password, dao with three test entries, no
+        // sessions, and first entry edit page
+        int numberOfCommentsBeforeEdit = mSql2oEntryDao.findAll().size();
+        BlogEntry firstBlogEntry =
+                mSql2oBlogDao.findEntryById(1);
+        // When user edits entry, changing title and body
+        getResponseBodyOfPostRequestWithRightPasswordCookie(
+                "/entries/save/" + firstBlogEntry.getId() + "/"
+                        + firstBlogEntry.getSlugFromTitle(),
+                "title=title&body=body"
+        );
+        // old comments should be save for new entry
+        assertEquals(
+                numberOfCommentsBeforeEdit, mSql2oEntryDao.findAll().size());
+    }
+
+    @Test
     public void removingFirstEntryReturnsChangesSizeOfDaoToTwo()
             throws Exception {
         // Given cookie with password, no session, dao with three test entries,

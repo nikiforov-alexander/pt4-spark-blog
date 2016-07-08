@@ -67,15 +67,18 @@ public class MainTest {
         String connectionString = TEST_DATASOURCE +
                 ";INIT=RUNSCRIPT from 'classpath:db/init.sql'";
         Sql2o sql2o = new Sql2o(connectionString, "", "");
-        mSql2oBlogDao = new Sql2oBlogDao(sql2o);
-        mSql2oEntryDao = new Sql2oEntryDao(sql2o);
         mConnection = sql2o.open();
+        mSql2oBlogDao = Main.getSql2oBlogDao();
+        mSql2oEntryDao = Main.getSql2oEntryDao();
+        // fill our test database with three test entries
         // set up our ApiClient
         mApiClient = new ApiClient("http://localhost:" + PORT);
         // generate error 404 page model
         mErrorPageModel = new HashMap<>();
         mErrorPageModel.put("status", 404);
         mErrorPageModel.put("errorMessage", NOT_FOUND_MESSAGE);
+        // make first request to index page to fill our database
+        mApiClient.request("GET", "/");
     }
 
     @After
@@ -192,29 +195,28 @@ public class MainTest {
     @Test
     public void authorizedRequestOnNonExistingDetailEntryPageShowsNotFoundPage()
             throws Exception {
-        // Given cookie with password and empty DAO with no entries
-        // model:
-        // When get request to edit entry page is made
+        // Given cookie with password
+        // When get request to non-existing edit entry page is made
         // Then not-found error page is returned
         assertEquals(
                 getHtmlOfPageWithHbsWithModel("not-found.hbs", mErrorPageModel),
                 getResponseBodyOfGetRequestWithRightPasswordCookie(
                         "/entries/detail/1234543/title"));
     }
-//    @Test
-//    public void authorizedRequestOnEditEntryPageWithNoEntriesShowsNotFoundPage()
-//            throws Exception {
-//        // Given cookie with password and empty DAO with no entries
-//        // model of error page:
-//        // When get request to edit entry page is made
-//        // Then not-found error page is returned
-//        assertEquals(
-//                getHtmlOfPageWithHbsWithModel("not-found.hbs", mErrorPageModel),
-//                getResponseBodyOfGetRequestWithRightPasswordCookie(
-//                        "/entries/edit/1234543/title"));
-//    }
+    @Test
+    public void authorizedRequestOnEditEntryPageWithNoEntriesShowsNotFoundPage()
+            throws Exception {
+        // Given cookie with password
+        // model of error page:
+        // When get request to non-existing edit entry page is made
+        // Then not-found error page is returned
+        assertEquals(
+                getHtmlOfPageWithHbsWithModel("not-found.hbs", mErrorPageModel),
+                getResponseBodyOfGetRequestWithRightPasswordCookie(
+                        "/entries/edit/1234543/title"));
+    }
 //
-//    // Not quite right test, but I will still include it
+//    // Not quite right test, but I will still leave it here
 //    @Test
 //    public void addingNewEntryWithPostRequestReturnsRightResponseHomePageWithNewEntry()
 //            throws Exception {
@@ -238,20 +240,20 @@ public class MainTest {
 //        );
 //    }
 //
-//    @Test
-//    public void givingWrongPasswordRedirectsBackToHomePageWhenSessionIsNew()
-//            throws Exception {
-//        // Given no cookies with password, and new empty session
-//        // When user tries type wrong password, ( same will happen when
-//        // password  is right )
-//        // Then home page is returned back
-//        Map<String, Object> model = new HashMap<>();
-//        model.put("entries", Main.mSimpleBlogDao.findAllEntries());
-//        assertEquals(
-//                getHtmlOfPageWithHbsWithModel("index.hbs", model),
-//                getResponseBodyOfPostRequestWithoutPasswordCookie(
-//                        "/password","password=password"));
-//    }
+    @Test
+    public void givingWrongPasswordRedirectsBackToHomePageWhenSessionIsNew()
+            throws Exception {
+        // Given no cookies with password, and new empty session
+        // When user tries type wrong password, ( same will happen when
+        // password  is right )
+        // Then home page is returned back
+        Map<String, Object> model = new HashMap<>();
+        model.put("entries", mSql2oBlogDao.findAllEntries());
+        assertEquals(
+                getHtmlOfPageWithHbsWithModel("index.hbs", model),
+                getResponseBodyOfPostRequestWithoutPasswordCookie(
+                        "/password","password=password"));
+    }
 //
 //    // test does not work because session is not saved in filter method,
 //    // however, line with redirect to protected page in post("/password/page")

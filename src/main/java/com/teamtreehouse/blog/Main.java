@@ -85,9 +85,11 @@ public class Main {
             request.session().attribute("protected-page",request.uri());
             if (request.cookie("password") == null
                     || !request.cookie("password").equals(masterPassword)) {
-               response.redirect("/password");
-               // stop from processing with initial request
-               halt();
+                // set unauthorized status
+                response.status(401);
+                response.redirect("/password");
+                // stop from processing with initial request
+                halt();
             }
         };
         for (String route: protectedRoutes) {

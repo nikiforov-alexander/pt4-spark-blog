@@ -3,7 +3,7 @@
         <div class="container">
             <div class="edit-entry">
                 <h2>Edit Entry</h2>
-                <form action="/entries/save/{{ entry.hashId }}/{{ entry.slugFromTitle }}"
+                <form action="/entries/save/{{ entry.id }}/{{ entry.slugFromTitle }}"
                       method="post">
                     <label for="title">Title</label>
                     <!--Added required so that title can't be empty-->
@@ -12,15 +12,15 @@
                     <!--changed name attr to "body" for convenience-->
                     <textarea rows="5" name="body">{{ entry.body }}</textarea>
                     <!--Tags-->
-                    <label for="tags">Tags</label>
-                    <input type="text" name="tags" value="{{ entry.stringOfTags }}"><br>
+                    <!--<label for="tags">Tags</label>-->
+                    <!--<input type="text" name="tags" value="{{ entry.stringOfTags }}"><br>-->
                     <!--Submit button-->
                     <input type="submit" value="Save Entry" class="button">
                     <!--Cancel button-->
-                    <a href="/entries/detail/{{ entry.hashId }}/{{ entry.slugFromTitle }}"
+                    <a href="/entries/detail/{{ entry.id }}/{{ entry.slugFromTitle }}"
                        class="button button-secondary">Cancel</a>
                     <!--Remove button-->
-                    <a href="/entries/remove/{{ entry.hashId }}/{{ entry.slugFromTitle }}"
+                    <a href="/entries/remove/{{ entry.id }}/{{ entry.slugFromTitle }}"
                        class="button button-remove">Remove</a>
                 </form>
             </div>

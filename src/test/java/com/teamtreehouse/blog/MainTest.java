@@ -1,43 +1,54 @@
 package com.teamtreehouse.blog;
 
-import com.teamtreehouse.blog.model.BlogEntry;
-import com.teamtreehouse.blog.model.Comment;
+import com.teamtreehouse.blog.dao.Sql2oBlogDao;
+import com.teamtreehouse.blog.dao.Sql2oEntryDao;
 import com.teamtreehouse.blog.testing.ApiClient;
-import com.teamtreehouse.blog.testing.ApiResponse;
 import org.junit.*;
 import org.junit.rules.TestRule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
-import spark.ModelAndView;
+import org.sql2o.Connection;
+import org.sql2o.Sql2o;
 import spark.Spark;
-import spark.template.handlebars.HandlebarsTemplateEngine;
-
-import org.junit.Test;
 
 import java.util.HashMap;
-import java.util.Map;
-
-import static org.junit.Assert.*;
 
 public class MainTest {
+    // test port
     private static final String PORT = "4568";
-    private static final String notFoundMessage = "No such entry found";
+    // test data source
+    private static final String TEST_DATASOURCE = "jdbc:h2:mem:testing";
+    // database connection
+    private Connection mConnection;
+    // our main testing class, generating requests, and returning responses
     private ApiClient mApiClient;
+    // used to check cookie with password
     private static final String mCookieWithPassword = "password=admin";
+    // right password
+    private final String mRightPassword = "admin";
+    // used for checking error page
+    private static final String NOT_FOUND_MESSAGE = "No such entry found";
+    // model of error page to be put to handlebars template engine
     private HashMap<String, Object> mErrorPageModel;
 
+    // DAOs
+    private Sql2oBlogDao mSql2oBlogDao;
+    private Sql2oEntryDao mSql2oEntryDao;
+
+    // just to print test names before tests
     @Rule
     public TestRule watcher = new TestWatcher() {
         protected void starting(Description description) {
             System.out.printf("%n -------- Starting test: %s %n",description.getMethodName());
         }
     };
-    private final String mRightPassword = "admin";
 
     @BeforeClass
     public static void startServer() {
-        String[] args = {PORT};
+        // setting up our Api with port and test data source
+        String[] args = {PORT, TEST_DATASOURCE};
         Main.main(args);
+        // wait until server is up and running
         Spark.awaitInitialization();
     }
     @AfterClass
@@ -47,12 +58,25 @@ public class MainTest {
 
     @Before
     public void setUp() throws Exception {
+        // get our DAOs connected with database
+        String connectionString = TEST_DATASOURCE +
+                ";INIT=RUNSCRIPT from 'classpath:db/init.sql";
+        Sql2o sql2o = new Sql2o(connectionString, "", "");
+        mSql2oBlogDao = new Sql2oBlogDao(sql2o);
+        mSql2oEntryDao = new Sql2oEntryDao(sql2o);
+        mConnection = sql2o.open();
+        // set up our ApiClient
         mApiClient = new ApiClient("http://localhost:" + PORT);
+        // generate error 404 page model
         mErrorPageModel = new HashMap<>();
         mErrorPageModel.put("status", 404);
-        mErrorPageModel.put("errorMessage", notFoundMessage);
+        mErrorPageModel.put("errorMessage", NOT_FOUND_MESSAGE);
     }
 
+    @After
+    public void tearDown() throws Exception {
+        mConnection.close();
+    }
 //    // methods to get html page as a string giving a .hbs file name and model
 //    // to put, null or filled
 //    // @return String - rendered html with Handlebars template engine

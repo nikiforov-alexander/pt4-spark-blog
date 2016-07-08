@@ -281,6 +281,17 @@ public class MainTest {
 //    }
 //
 //
+
+    @Test
+    public void newEntryIncreasesSizeOfDatabase() throws Exception {
+        // Given cookie with password,
+        // When user posts new entry
+        getResponseBodyOfPostRequestWithRightPasswordCookie(
+                "/entries/new","title=title&body=body");
+        // Then size of DAO is increased
+        assertEquals(4, mSql2oBlogDao.findAllEntries().size());
+    }
+
     @Test
     public void detailPageReturnedRightAsWeExpected() throws Exception {
         // Given no cookies with password, no sessions, and first blog entry

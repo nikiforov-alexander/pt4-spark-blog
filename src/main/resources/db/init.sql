@@ -13,3 +13,10 @@ CREATE TABLE IF NOT EXISTS comments (
   date DATETIME,
   FOREIGN KEY(entry_id) REFERENCES PUBLIC.entries(id) ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS tags (
+  id INTEGER PRIMARY KEY auto_increment,
+  entry_id INTEGER,
+  name VARCHAR,
+  FOREIGN KEY(entry_id) REFERENCES PUBLIC.entries(id) ON DELETE CASCADE
+);

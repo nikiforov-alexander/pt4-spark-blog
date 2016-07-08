@@ -178,16 +178,16 @@ public class MainTest {
                         "/entries/remove/somePage")
         );
     }
-//
-//    @Test
-//    public void authorizedRequestOnNewEntryPageShowsNewPage() throws Exception {
-//        // Given cookie with password
-//        // When get request to new entry page is made
-//        // Then new entry page is returned
-//        assertEquals(
-//                getHtmlOfPageWithHbsWithNullModel("new.hbs"),
-//                getResponseBodyOfGetRequestWithRightPasswordCookie("/entries/new"));
-//    }
+
+    @Test
+    public void authorizedGetRequestOnNewEntryPageShowsNewPage() throws Exception {
+        // Given cookie with password
+        // When get request to new entry page is made
+        // Then new entry page is returned
+        assertEquals(
+                getHtmlOfPageWithHbsWithNullModel("new.hbs"),
+                getResponseBodyOfGetRequestWithRightPasswordCookie("/entries/new"));
+    }
 //
 //    @Test
 //    public void authorizedRequestOnDetailEntryPageShowsNotFoundPage()

@@ -2,10 +2,12 @@ package com.teamtreehouse.blog;
 
 import com.teamtreehouse.blog.dao.Sql2oBlogDao;
 import com.teamtreehouse.blog.dao.Sql2oEntryDao;
+import com.teamtreehouse.blog.dao.Sql2oTagsDao;
 import com.teamtreehouse.blog.exception.ApiError;
 import com.teamtreehouse.blog.exception.DaoException;
 import com.teamtreehouse.blog.model.BlogEntry;
 import com.teamtreehouse.blog.model.Comment;
+import com.teamtreehouse.blog.model.Tag;
 import org.sql2o.Sql2o;
 import spark.Filter;
 import spark.ModelAndView;
@@ -27,14 +29,20 @@ public class Main {
     protected static Sql2oEntryDao getSql2oEntryDao() {
         return sSql2oEntryDao;
     }
+    private static Sql2oTagsDao sSql2oTagsDao;
+    protected static Sql2oTagsDao getSql2oTagsDao() {
+        return sSql2oTagsDao;
+    }
 
     private static void fillDaosWithTestEntriesAndComments() throws DaoException {
+        // add test entries
         BlogEntry blogEntry1 = new BlogEntry("Title1", "Body1", new Date(1L));
         BlogEntry blogEntry2 = new BlogEntry("Title2", "Body2", new Date(2L));
         BlogEntry blogEntry3 = new BlogEntry("Title3", "Body3", new Date(3L));
         sSql2oBlogDao.addEntry(blogEntry1);
         sSql2oBlogDao.addEntry(blogEntry2);
         sSql2oBlogDao.addEntry(blogEntry3);
+        // add test comments
         Comment comment1 =
                 new Comment(blogEntry1.getId(), "Body1", new Date(1L), "Name1");
         Comment comment2 =
@@ -44,6 +52,13 @@ public class Main {
         sSql2oEntryDao.addComment(comment1);
         sSql2oEntryDao.addComment(comment2);
         sSql2oEntryDao.addComment(comment3);
+        // add test tags
+        Tag tag1 = new Tag(blogEntry1.getId(), "tag1");
+        Tag tag2 = new Tag(blogEntry2.getId(), "tag2");
+        Tag tag3 = new Tag(blogEntry3.getId(), "tag3");
+        sSql2oTagsDao.addTag(tag1);
+        sSql2oTagsDao.addTag(tag2);
+        sSql2oTagsDao.addTag(tag3);
     }
 
     public static void main(String[] args) {
@@ -71,6 +86,7 @@ public class Main {
         Sql2o sql2o = new Sql2o(connectionString, "", "");
         sSql2oBlogDao = new Sql2oBlogDao(sql2o);
         sSql2oEntryDao = new Sql2oEntryDao(sql2o);
+        sSql2oTagsDao = new Sql2oTagsDao(sql2o);
         // test dao setup
         // redirect user to password page if cookie password is null, or
         // set to anything other than master password. Session attribute is
@@ -131,6 +147,7 @@ public class Main {
             }
             Map<String,Object> model = new HashMap<>();
             model.put("entries", sSql2oBlogDao.findAllEntries());
+            model.put("tags", sSql2oTagsDao.findAll());
             return new ModelAndView(model, "index.hbs");
         }, new HandlebarsTemplateEngine());
 

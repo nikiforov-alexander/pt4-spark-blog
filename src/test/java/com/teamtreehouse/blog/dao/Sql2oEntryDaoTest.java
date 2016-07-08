@@ -74,4 +74,14 @@ public class Sql2oEntryDaoTest {
         Comment comment = new Comment(12, "body", "author");
         mSql2oEntryDao.addComment(comment);
     }
+
+    @Test
+    public void sizeOfDaoIsEqualToOneAfterAddingOneComment() throws Exception {
+        // Given one test comment associated with first blog entry
+        Comment comment = newTestComment();
+        // When we add comment to DAO
+        mSql2oEntryDao.addComment(comment);
+        // Then size of List of comments returned using findAll should be 1
+        assertEquals(1, mSql2oEntryDao.findAll().size());
+    }
 }

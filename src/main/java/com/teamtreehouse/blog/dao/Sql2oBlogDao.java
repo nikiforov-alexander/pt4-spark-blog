@@ -18,7 +18,7 @@ public class Sql2oBlogDao implements BlogDao {
     }
 
     @Override
-    public void addEntry(BlogEntry blogEntry) throws DaoException {
+    public int addEntry(BlogEntry blogEntry) throws DaoException {
         String sqlQuery
                 = "INSERT INTO " +
                 "entries(title, body, date) " +
@@ -29,6 +29,7 @@ public class Sql2oBlogDao implements BlogDao {
                     .executeUpdate()
                     .getKey();
             blogEntry.setId(id);
+            return id;
         } catch (Sql2oException sql2oException) {
             throw new DaoException(sql2oException, "Problem adding entry");
         }

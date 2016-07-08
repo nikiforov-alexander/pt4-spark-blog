@@ -4,7 +4,6 @@ import com.teamtreehouse.blog.dao.Sql2oBlogDao;
 import com.teamtreehouse.blog.dao.Sql2oEntryDao;
 import com.teamtreehouse.blog.exception.ApiError;
 import com.teamtreehouse.blog.exception.DaoException;
-import com.teamtreehouse.blog.exception.NotFoundException;
 import com.teamtreehouse.blog.model.BlogEntry;
 import com.teamtreehouse.blog.model.Comment;
 import org.sql2o.Sql2o;
@@ -14,17 +13,18 @@ import spark.template.handlebars.HandlebarsTemplateEngine;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static spark.Spark.*;
 
 public class Main {
     private static Sql2oBlogDao sSql2oBlogDao;
-    protected static Sql2oBlogDao getSimpleBlogDao() {
+    protected static Sql2oBlogDao getSql2oBlogDao() {
         return sSql2oBlogDao;
     }
     private static Sql2oEntryDao sSql2oEntryDao;
-    protected static Sql2oEntryDao getSimpleEntryDao() {
+    protected static Sql2oEntryDao getSql2oEntryDao() {
         return sSql2oEntryDao;
     }
 
@@ -86,9 +86,11 @@ public class Main {
             request.session().attribute("protected-page",request.uri());
             if (request.cookie("password") == null
                     || !request.cookie("password").equals(masterPassword)) {
-               response.redirect("/password");
-               // stop from processing with initial request
-               halt();
+                // set unauthorized status
+                response.status(401);
+                response.redirect("/password");
+                // stop from processing with initial request
+                halt();
             }
         };
         for (String route: protectedRoutes) {
@@ -181,7 +183,11 @@ public class Main {
             }
             Comment comment = new Comment(entryId, body, authorName);
             // add comment
-            sSql2oEntryDao.addComment(comment);
+            try {
+                sSql2oEntryDao.addComment(comment);
+            } catch (DaoException e) {
+                System.out.println(e.getMessage());
+            }
             // redirect back to entry detail page
             String slugFromTitle = request.params("slugFromTitle");
             response.redirect("/entries/detail/" + entryId +
@@ -200,9 +206,13 @@ public class Main {
             String newBody = request.queryParams("body");
             BlogEntry newBlogEntry = new BlogEntry(newTitle, newBody);
             // add entry to DAO
-            sSql2oBlogDao.addEntry(newBlogEntry);
-            // setting created status
-            response.status(201);
+            try {
+                sSql2oBlogDao.addEntry(newBlogEntry);
+                // setting created status
+                response.status(201);
+            } catch (DaoException e) {
+                System.out.println(e.getMessage());
+            }
             // redirecting back home
             response.redirect("/");
             return null;
@@ -236,21 +246,19 @@ public class Main {
 
         // save entry post in edit.hbs
         // ApiError is thrown when entry is not found by slug
-        post("/entries/save/:hashId/:slugFromTitle", (request, response) -> {
+        post("/entries/save/:id/:slugFromTitle", (request, response) -> {
             // redirect to not found page if user types
-            // /entries/edit/a/some-slug
+            // non-integer id
             int entryId;
             try {
                 entryId = Integer.parseInt(request.params("id"));
             } catch (NumberFormatException nfe) {
                 throw new ApiError(404, notFoundMessage);
             }
-            // try to get old blog entry by slug
-            BlogEntry oldBlogEntry;
-            try {
-                oldBlogEntry =
+            // try to get old blog entry by slug, if not, return 404
+            BlogEntry oldBlogEntry =
                         sSql2oBlogDao.findEntryById(entryId);
-            } catch (NotFoundException nfe) {
+            if (oldBlogEntry == null) {
                 throw new ApiError(404, notFoundMessage);
             }
             // create new blog entry with title(non-null, see new.hbs) and body
@@ -260,9 +268,34 @@ public class Main {
             // even if user didn't change anything, because he pushed edit,
             // entry will have new creation date, the simplest way was, as I
             // thought is to remove and add new entry to DAO
-            sSql2oBlogDao.removeEntryById(entryId);
-            sSql2oBlogDao.addEntry(newBlogEntry);
-            // save new title and entry
+            // save old comments
+            List<Comment> listOfAssociatedComments =
+                    sSql2oEntryDao.findByEntryId(entryId);
+            try {
+                sSql2oBlogDao.removeEntryById(entryId);
+            } catch (DaoException daoException) {
+                // print message to us, not for user, and redirect back home
+                System.out.println(daoException.getMessage());
+                response.redirect("/");
+                return null;
+            }
+            try {
+                // add new entry, get his new id
+                int newEntryId = sSql2oBlogDao.addEntry(newBlogEntry);
+                // add comments to database with this id, cloning involved
+                for (Comment comment : listOfAssociatedComments) {
+                    Comment commentClone =
+                            new Comment(
+                                    newEntryId,
+                                    comment.getBody(),
+                                    comment.getDate(),
+                                    comment.getAuthor());
+                    sSql2oEntryDao.addComment(commentClone);
+                }
+            } catch (DaoException daoException) {
+                System.out.println(daoException.getMessage());
+            }
+            // redirect back home
             response.redirect("/");
             return null;
         });
@@ -277,18 +310,18 @@ public class Main {
             } catch (NumberFormatException nfe) {
                 throw new ApiError(404, notFoundMessage);
             }
-            // get old blog entry by id
-            BlogEntry blogEntry;
-            try {
-                blogEntry = sSql2oBlogDao.findEntryById(entryId);
-            } catch (NotFoundException nfe) {
+            // get blog entry by id, or throw not found error page
+            BlogEntry blogEntry = sSql2oBlogDao.findEntryById(entryId);
+            if (blogEntry == null) {
                 throw new ApiError(404, notFoundMessage);
             }
             // remove entry from dao
             try {
                 sSql2oBlogDao.removeEntryById(entryId);
             } catch (DaoException daoException) {
-                throw new ApiError(500, daoException.getMessage());
+                // if there is error, on server we'll see problem, but user
+                // should not now about it
+                System.out.println(daoException.getMessage());
             }
             // redirect to home page
             response.redirect("/");

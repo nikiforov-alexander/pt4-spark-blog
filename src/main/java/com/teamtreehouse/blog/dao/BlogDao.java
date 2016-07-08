@@ -6,7 +6,7 @@ import com.teamtreehouse.blog.model.BlogEntry;
 import java.util.List;
 
 public interface BlogDao {
-    void addEntry(BlogEntry blogEntry) throws DaoException;
+    int addEntry(BlogEntry blogEntry) throws DaoException;
     List<BlogEntry> findAllEntries();
     BlogEntry findEntryById(int id);
     void removeEntryById(int id) throws DaoException;

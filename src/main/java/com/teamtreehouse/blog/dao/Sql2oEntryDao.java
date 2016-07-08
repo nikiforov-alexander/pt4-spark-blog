@@ -37,6 +37,7 @@ public class Sql2oEntryDao implements EntryDao {
         String sqlQuery = "SELECT * FROM comments";
         try (Connection connection = mSql2o.open()) {
             return connection.createQuery(sqlQuery)
+                    .addColumnMapping("ENTRY_ID", "entryId")
                     .executeAndFetch(Comment.class);
         }
     }

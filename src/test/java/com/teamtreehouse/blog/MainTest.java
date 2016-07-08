@@ -133,7 +133,7 @@ public class MainTest {
 
     // actual tests
     @Test
-    public void unauthorisedRequestOnNewEntryPageRedirectsToPasswordPage()
+    public void unauthorisedGetRequestOnNewEntryPageRedirectsToPasswordPage()
         throws Exception {
         // Given no cookies with password
         // When get to new entries page
@@ -142,17 +142,42 @@ public class MainTest {
                 getHtmlOfPageWithHbsWithNullModel("password.hbs"),
                 getResponseBodyOfGetRequestWithoutPasswordCookie("/entries/new"));
     }
-//    @Test
-//    public void unauthorisedRequestOnEditEntryPageRedirectsToPasswordPage()
-//            throws Exception {
-//        // Given no cookies with password
-//        // When get request to edit entries page is made
-//        // Then password html page should come as a response, even if there are
-//        // no such entry
-//        assertEquals(
-//                getHtmlOfPageWithHbsWithNullModel("password.hbs"),
-//                getResponseBodyOfGetRequestWithoutPasswordCookie("/entries/edit/somePage"));
-//    }
+    @Test
+    public void unauthorisedGetRequestOnEditEntryPageRedirectsToPasswordPage()
+            throws Exception {
+        // Given no cookies with password
+        // When get request to edit entries page is made
+        // Then password html page should come as a response, even if there are
+        // no such entry
+        assertEquals(
+                getHtmlOfPageWithHbsWithNullModel("password.hbs"),
+                getResponseBodyOfGetRequestWithoutPasswordCookie("/entries/edit/somePage"));
+    }
+    @Test
+    public void unauthorisedPostRequestOnSaveEntryPageRedirectsToPasswordPage()
+            throws Exception {
+        // Given no cookies with password
+        // When get request to edit entries page is made
+        // Then password html page should come as a response, even if there are
+        // no such entry
+        assertEquals(
+                getHtmlOfPageWithHbsWithNullModel("password.hbs"),
+                getResponseBodyOfPostRequestWithoutPasswordCookie(
+                        "/entries/save/somePage","title=title&body=body"));
+    }
+    @Test
+    public void unauthorisedGetRequestOnRemoveEntryPageRedirectsToPasswordPage()
+            throws Exception {
+        // Given no cookies with password
+        // When get request to edit entries page is made
+        // Then password html page should come as a response, even if there are
+        // no such entry
+        assertEquals(
+                getHtmlOfPageWithHbsWithNullModel("password.hbs"),
+                getResponseBodyOfGetRequestWithoutPasswordCookie(
+                        "/entries/remove/somePage")
+        );
+    }
 //
 //    @Test
 //    public void authorizedRequestOnNewEntryPageShowsNewPage() throws Exception {

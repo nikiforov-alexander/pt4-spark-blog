@@ -346,34 +346,31 @@ public class MainTest {
                 .findByEntryId(firstBlogEntry.getId()).get(1);
         assertEquals("Anonymous", lastComment.getAuthor());
     }
-//    @Test
-//    public void postToEntriesDetailsExistingPageTryingToCreateCommentReturnsDetailPageWithNewComment()
-//            throws Exception {
-//        // Given no cookies with password, no sessions, dao with three
-//        // test entries
-//        // When we make POST request to page with address that doesn't exist
-//        BlogEntry firstBlogEntry =
-//            Main.mSimpleBlogDao.findAllEntries().get(0);
-//        ApiResponse apiResponse =
-//                mApiClient.request("POST",
-//                        "/entries/detail/"
-//                        + firstBlogEntry.getHashId() +
-//                        "/" + firstBlogEntry.getSlugFromTitle(),
-//                        "name=name&body=body");
-//        firstBlogEntry =
-//                Main.mSimpleBlogDao.findAllEntries().get(0);
-//        HashMap<String, Object> model = new HashMap<>();
-//        model.put("entry", firstBlogEntry);
-//        model.put("comments", firstBlogEntry.getComments());
-//        model.put("tags", firstBlogEntry.getTags());
-//        // Then body of response of this request should be equal to
-//        // modeled offline with handlebars page of detail entry with
-//        // new comment
-//        assertEquals(
-//                getHtmlOfPageWithHbsWithModel("detail.hbs", model),
-//                apiResponse.getBody()
-//        );
-//    }
+    @Test
+    public void postToEntriesDetailsExistingPageTryingToCreateCommentReturnsDetailPageWithNewComment()
+            throws Exception {
+        // Given no cookies with password, no sessions, dao with three
+        // test entries
+        // When we make POST request to page with address that doesn't exist
+        BlogEntry firstBlogEntry =
+                mSql2oBlogDao.findEntryById(1);
+        ApiResponse apiResponseOfPostCommentToEntryDetailPage =
+                mApiClient.request("POST",
+                        "/entries/detail/"
+                        + firstBlogEntry.getId() +
+                        "/" + firstBlogEntry.getSlugFromTitle(),
+                        "name=name&body=body");
+        HashMap<String, Object> model = new HashMap<>();
+        model.put("entry", firstBlogEntry);
+        model.put("comments", mSql2oEntryDao.findByEntryId(1));
+        // Then body of response of this request should be equal to
+        // modeled offline with handlebars page of detail entry with
+        // new comment
+        assertEquals(
+                getHtmlOfPageWithHbsWithModel("detail.hbs", model),
+                apiResponseOfPostCommentToEntryDetailPage.getBody()
+        );
+    }
 //
 //    @Test
 //    public void editEntryPageIsReturnedCorrectly() throws Exception {

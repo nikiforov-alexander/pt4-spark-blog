@@ -245,12 +245,10 @@ public class Main {
             } catch (NumberFormatException nfe) {
                 throw new ApiError(404, notFoundMessage);
             }
-            // try to get old blog entry by slug
-            BlogEntry oldBlogEntry;
-            try {
-                oldBlogEntry =
+            // try to get old blog entry by slug, if not, return 404
+            BlogEntry oldBlogEntry =
                         sSql2oBlogDao.findEntryById(entryId);
-            } catch (NotFoundException nfe) {
+            if (oldBlogEntry == null) {
                 throw new ApiError(404, notFoundMessage);
             }
             // create new blog entry with title(non-null, see new.hbs) and body
@@ -260,8 +258,17 @@ public class Main {
             // even if user didn't change anything, because he pushed edit,
             // entry will have new creation date, the simplest way was, as I
             // thought is to remove and add new entry to DAO
-            sSql2oBlogDao.removeEntryById(entryId);
-            sSql2oBlogDao.addEntry(newBlogEntry);
+            try {
+                sSql2oBlogDao.removeEntryById(entryId);
+            } catch (DaoException daoException) {
+                // print message to us, not for user
+                System.out.println(daoException.getMessage());
+            }
+            try {
+                sSql2oBlogDao.addEntry(newBlogEntry);
+            } catch (DaoException daoException) {
+                System.out.println(daoException.getMessage());
+            }
             // save new title and entry
             response.redirect("/");
             return null;

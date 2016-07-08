@@ -2,6 +2,7 @@ package com.teamtreehouse.blog;
 
 import com.teamtreehouse.blog.dao.Sql2oBlogDao;
 import com.teamtreehouse.blog.dao.Sql2oEntryDao;
+import com.teamtreehouse.blog.model.BlogEntry;
 import com.teamtreehouse.blog.testing.ApiClient;
 import org.junit.*;
 import org.junit.rules.TestRule;
@@ -278,29 +279,29 @@ public class MainTest {
 //    }
 //
 //
-//    @Test
-//    public void detailPageReturnedRightAsWeExpected() throws Exception {
-//        // Given no cookies with password, no sessions
-//        BlogEntry firstBlogEntry =
-//                Main.mSimpleBlogDao.findAllEntries().get(0);
-//        HashMap<String, Object> model = new HashMap<>();
-//        model.put("entry", firstBlogEntry);
-//        model.put("comments", firstBlogEntry.getComments());
-//        model.put("tags", firstBlogEntry.getTags());
-//        // When we make GET request to detail page of first test Entry
-//        String requestBodyOfGetRequestToDetailPage =
-//                getResponseBodyOfGetRequestWithRightPasswordCookie(
-//                        "/entries/detail/"
-//                        + firstBlogEntry.getHashId() + "/"
-//                        + firstBlogEntry.getSlugFromTitle()
-//                );
-//        // Then body of detail page modeled offline using handlebars
-//        // should be equal to response body of actual detail page
-//        assertEquals(
-//                getHtmlOfPageWithHbsWithModel("detail.hbs", model),
-//                requestBodyOfGetRequestToDetailPage
-//        );
-//    }
+    @Test
+    public void detailPageReturnedRightAsWeExpected() throws Exception {
+        // Given no cookies with password, no sessions, and first blog entry
+        // with its comments
+        BlogEntry firstBlogEntry =
+                mSql2oBlogDao.findEntryById(1);
+        HashMap<String, Object> model = new HashMap<>();
+        model.put("entry", firstBlogEntry);
+        model.put("comments", mSql2oEntryDao.findByEntryId(1));
+        // When we make GET request to detail page of first test Entry
+        String requestBodyOfGetRequestToDetailPage =
+                getResponseBodyOfGetRequestWithRightPasswordCookie(
+                        "/entries/detail/"
+                        + firstBlogEntry.getId() + "/"
+                        + firstBlogEntry.getSlugFromTitle()
+                );
+        // Then body of detail page modeled offline using handlebars
+        // should be equal to response body of actual detail page
+        assertEquals(
+                getHtmlOfPageWithHbsWithModel("detail.hbs", model),
+                requestBodyOfGetRequestToDetailPage
+        );
+    }
 //
 //    @Test
 //    public void postToEntriesDetailsPageThatDoesNotExistsReturnsNotFoundPage()

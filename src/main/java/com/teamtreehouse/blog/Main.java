@@ -236,9 +236,9 @@ public class Main {
 
         // save entry post in edit.hbs
         // ApiError is thrown when entry is not found by slug
-        post("/entries/save/:hashId/:slugFromTitle", (request, response) -> {
+        post("/entries/save/:id/:slugFromTitle", (request, response) -> {
             // redirect to not found page if user types
-            // /entries/edit/a/some-slug
+            // non-integer id
             int entryId;
             try {
                 entryId = Integer.parseInt(request.params("id"));

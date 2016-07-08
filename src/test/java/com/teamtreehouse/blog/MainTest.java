@@ -188,19 +188,19 @@ public class MainTest {
                 getHtmlOfPageWithHbsWithNullModel("new.hbs"),
                 getResponseBodyOfGetRequestWithRightPasswordCookie("/entries/new"));
     }
-//
-//    @Test
-//    public void authorizedRequestOnDetailEntryPageShowsNotFoundPage()
-//            throws Exception {
-//        // Given cookie with password and empty DAO with no entries
-//        // model:
-//        // When get request to edit entry page is made
-//        // Then not-found error page is returned
-//        assertEquals(
-//                getHtmlOfPageWithHbsWithModel("not-found.hbs", mErrorPageModel),
-//                getResponseBodyOfGetRequestWithRightPasswordCookie(
-//                        "/entries/detail/1234543/title"));
-//    }
+
+    @Test
+    public void authorizedRequestOnNonExistingDetailEntryPageShowsNotFoundPage()
+            throws Exception {
+        // Given cookie with password and empty DAO with no entries
+        // model:
+        // When get request to edit entry page is made
+        // Then not-found error page is returned
+        assertEquals(
+                getHtmlOfPageWithHbsWithModel("not-found.hbs", mErrorPageModel),
+                getResponseBodyOfGetRequestWithRightPasswordCookie(
+                        "/entries/detail/1234543/title"));
+    }
 //    @Test
 //    public void authorizedRequestOnEditEntryPageWithNoEntriesShowsNotFoundPage()
 //            throws Exception {

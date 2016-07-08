@@ -420,30 +420,23 @@ public class MainTest {
                 htmlStringOfModeledIndexPageWithNewEntry);
     }
 
-//    @Test
-//    public void removingFirstEntryReturnsHomePageWithTwoEntries()
-//            throws Exception {
-//        // Given cookie with password, no session, dao with three test entries,
-//        // and detail page of first entry
-//        BlogEntry firstBlogEntry =
-//                Main.mSimpleBlogDao.findAllEntries().get(0);
-//        // When remove button is pressed, and get request to /entries/remove/...
-//        // is made
-//        String responseBodyOfGetRequestMadeWhenRemoveIsPressed =
-//                getResponseBodyOfGetRequestWithRightPasswordCookie(
-//                        "/entries/remove/" + firstBlogEntry.getHashId() + "/"
-//                        + firstBlogEntry.getSlugFromTitle()
-//                );
-//        HashMap<String, Object> model = new HashMap<>();
-//        model.put("entries", Main.mSimpleBlogDao.findAllEntries());
-//        String htmlStringOfPageGeneratedByHandlebarsByUs =
-//                getHtmlOfPageWithHbsWithModel("index.hbs", model);
-//        // Then user should be returned to home page, and body of the page
-//        // generated from changed DAO by us is equal to get response body
-//        assertEquals(
-//                htmlStringOfPageGeneratedByHandlebarsByUs,
-//                responseBodyOfGetRequestMadeWhenRemoveIsPressed);
-//    }
+    @Test
+    public void removingFirstEntryReturnsChangesSizeOfDaoToTwo()
+            throws Exception {
+        // Given cookie with password, no session, dao with three test entries,
+        // and detail page of first entry
+        BlogEntry firstBlogEntry =
+                mSql2oBlogDao.findEntryById(1);
+        // When remove button is pressed, and get request to /entries/remove/...
+        // is made
+        getResponseBodyOfGetRequestWithRightPasswordCookie(
+                "/entries/remove/" + firstBlogEntry.getId() + "/"
+                + firstBlogEntry.getSlugFromTitle()
+        );
+        // Then size of blog dao should be equal to two. That right page will
+        // be generated we know from other tests
+        assertEquals(2, mSql2oBlogDao.findAllEntries().size());
+    }
 //    @Test
 //    public void makingGetRequestToNonExistingEntryReturnsErrorPageAndNotServerError()
 //            throws Exception {

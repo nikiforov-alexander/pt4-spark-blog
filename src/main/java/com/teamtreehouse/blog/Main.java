@@ -277,11 +277,9 @@ public class Main {
             } catch (NumberFormatException nfe) {
                 throw new ApiError(404, notFoundMessage);
             }
-            // get old blog entry by id
-            BlogEntry blogEntry;
-            try {
-                blogEntry = sSql2oBlogDao.findEntryById(entryId);
-            } catch (NotFoundException nfe) {
+            // get blog entry by id, or throw not found error page
+            BlogEntry blogEntry = sSql2oBlogDao.findEntryById(entryId);
+            if (blogEntry == null) {
                 throw new ApiError(404, notFoundMessage);
             }
             // remove entry from dao

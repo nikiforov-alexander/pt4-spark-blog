@@ -52,4 +52,19 @@ public class Sql2oBlogDao implements BlogDao {
                     .executeAndFetchFirst(BlogEntry.class);
         }
     }
+
+    @Override
+    public void removeEntryById(int id) throws DaoException {
+        String sqlQuery
+                = "DELETE FROM " +
+                "entries "+
+                "WHERE id = :id";
+        try (Connection connection = mSql2o.open()) {
+            connection.createQuery(sqlQuery)
+                    .addParameter("id", id)
+                    .executeUpdate();
+        } catch (Sql2oException sql2oException) {
+            throw new DaoException(sql2oException, "Problem removing entry");
+        }
+    }
 }

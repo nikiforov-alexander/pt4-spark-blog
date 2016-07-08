@@ -288,7 +288,9 @@ public class Main {
             try {
                 sSql2oBlogDao.removeEntryById(entryId);
             } catch (DaoException daoException) {
-                throw new ApiError(500, daoException.getMessage());
+                // if there is error, on server we'll see problem, but user
+                // should not now about it
+                System.out.println(daoException.getMessage());
             }
             // redirect to home page
             response.redirect("/");

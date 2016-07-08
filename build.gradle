@@ -12,6 +12,8 @@ repositories {
 }
 
 dependencies {
+    compile 'org.sql2o:sql2o:1.5.4'
+    compile 'com.h2database:h2:1.4.191'
     compile "org.slf4j:slf4j-simple:1.6.2"
     compile 'com.sparkjava:spark-core:2.3'
     compile 'com.sparkjava:spark-template-handlebars:2.3'

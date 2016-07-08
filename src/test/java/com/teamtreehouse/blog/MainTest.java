@@ -3,6 +3,7 @@ package com.teamtreehouse.blog;
 import com.teamtreehouse.blog.dao.Sql2oBlogDao;
 import com.teamtreehouse.blog.dao.Sql2oEntryDao;
 import com.teamtreehouse.blog.model.BlogEntry;
+import com.teamtreehouse.blog.model.Comment;
 import com.teamtreehouse.blog.testing.ApiClient;
 import com.teamtreehouse.blog.testing.ApiResponse;
 import org.junit.*;
@@ -322,29 +323,29 @@ public class MainTest {
         );
 
     }
-//    @Test
-//    public void postToEntriesDetailsExistingPageTryingToCreateAnonymousCommentReturnsDetailPageWithNewComment()
-//            throws Exception {
-//        // Given no cookies with password, no sessions, dao with three
-//        // test entries
-//        // When we make POST request to detail page, to create comment
-//        // with empty author name and non-empty body
-//        BlogEntry firstBlogEntry =
-//                Main.mSimpleBlogDao.findAllEntries().get(0);
-//        ApiResponse apiResponse =
-//                mApiClient.request("POST",
-//                        "/entries/detail/"
-//                                + firstBlogEntry.getHashId() +
-//                                "/" + firstBlogEntry.getSlugFromTitle(),
-//                        "name=&body=body");
-//        // Then author name of last added comment should be "Anonymous"
-//        firstBlogEntry =
-//                Main.mSimpleBlogDao.findAllEntries().get(0);
-//        int indexOfLastComment = firstBlogEntry.getComments().size() - 1;
-//        Comment lastComment = firstBlogEntry
-//                .getComments().get(indexOfLastComment);
-//        assertEquals("Anonymous", lastComment.getAuthor());
-//    }
+    @Test
+    public void postToEntriesDetailsExistingPageTryingToCreateAnonymousCommentReturnsDetailPageWithNewComment()
+            throws Exception {
+        // Given no cookies with password, no sessions, dao with three
+        // test entries
+        // When we make POST request to detail page, to create comment
+        // with empty author name and non-empty body
+        BlogEntry firstBlogEntry =
+                mSql2oBlogDao.findEntryById(1);
+        ApiResponse apiResponse =
+                mApiClient.request("POST",
+                        "/entries/detail/"
+                                + firstBlogEntry.getId() +
+                                "/" + firstBlogEntry.getSlugFromTitle(),
+                        "name=&body=body");
+        // Then author name of last added comment should be "Anonymous"
+        // NOTE: here i know that in test database each test entry has one
+        //       comment, that's why I use get(1). But it is not cheating,
+        //       because it is test database
+        Comment lastComment = mSql2oEntryDao
+                .findByEntryId(firstBlogEntry.getId()).get(1);
+        assertEquals("Anonymous", lastComment.getAuthor());
+    }
 //    @Test
 //    public void postToEntriesDetailsExistingPageTryingToCreateCommentReturnsDetailPageWithNewComment()
 //            throws Exception {

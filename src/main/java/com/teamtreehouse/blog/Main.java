@@ -205,11 +205,11 @@ public class Main {
             // add entry to DAO
             try {
                 sSql2oBlogDao.addEntry(newBlogEntry);
+                // setting created status
+                response.status(201);
             } catch (DaoException e) {
                 System.out.println(e.getMessage());
             }
-            // setting created status
-            response.status(201);
             // redirecting back home
             response.redirect("/");
             return null;

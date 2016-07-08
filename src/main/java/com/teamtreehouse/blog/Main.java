@@ -19,11 +19,11 @@ import static spark.Spark.*;
 
 public class Main {
     private static Sql2oBlogDao sSql2oBlogDao;
-    protected static Sql2oBlogDao getSimpleBlogDao() {
+    protected static Sql2oBlogDao getSql2oBlogDao() {
         return sSql2oBlogDao;
     }
     private static Sql2oEntryDao sSql2oEntryDao;
-    protected static Sql2oEntryDao getSimpleEntryDao() {
+    protected static Sql2oEntryDao getSql2oEntryDao() {
         return sSql2oEntryDao;
     }
 

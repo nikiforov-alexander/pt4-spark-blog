@@ -4,7 +4,6 @@ import com.teamtreehouse.blog.dao.Sql2oBlogDao;
 import com.teamtreehouse.blog.dao.Sql2oEntryDao;
 import com.teamtreehouse.blog.exception.ApiError;
 import com.teamtreehouse.blog.exception.DaoException;
-import com.teamtreehouse.blog.exception.NotFoundException;
 import com.teamtreehouse.blog.model.BlogEntry;
 import com.teamtreehouse.blog.model.Comment;
 import org.sql2o.Sql2o;
@@ -181,7 +180,11 @@ public class Main {
             }
             Comment comment = new Comment(entryId, body, authorName);
             // add comment
-            sSql2oEntryDao.addComment(comment);
+            try {
+                sSql2oEntryDao.addComment(comment);
+            } catch (DaoException e) {
+                System.out.println(e.getMessage());
+            }
             // redirect back to entry detail page
             String slugFromTitle = request.params("slugFromTitle");
             response.redirect("/entries/detail/" + entryId +
@@ -200,7 +203,11 @@ public class Main {
             String newBody = request.queryParams("body");
             BlogEntry newBlogEntry = new BlogEntry(newTitle, newBody);
             // add entry to DAO
-            sSql2oBlogDao.addEntry(newBlogEntry);
+            try {
+                sSql2oBlogDao.addEntry(newBlogEntry);
+            } catch (DaoException e) {
+                System.out.println(e.getMessage());
+            }
             // setting created status
             response.status(201);
             // redirecting back home

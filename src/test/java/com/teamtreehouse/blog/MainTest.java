@@ -396,30 +396,30 @@ public class MainTest {
                 bodyOfGetRequestWithRightPassword
                 );
     }
-//
-//    @Test
-//    public void postRequestToSaveEntryReturnsCorrectHomePage() throws Exception {
-//        // Given cookie with password, dao with three test entries, no
-//        // sessions, and first entry edit page
-//        BlogEntry firstBlogEntry =
-//                Main.mSimpleBlogDao.findAllEntries().get(0);
-//        // When user edits entry, changing title and body
-//        String bodyOfResponseToPostRequestMadeToEditPage =
-//                getResponseBodyOfPostRequestWithRightPasswordCookie(
-//                        "/entries/save/" + firstBlogEntry.getHashId() + "/"
-//                        + firstBlogEntry.getSlugFromTitle(),
-//                       "title=title&body=body&tags=tag1"
-//                );
-//        Map<String, Object> model = new HashMap<>();
-//        model.put("entries", Main.mSimpleBlogDao.findAllEntries());
-//        String htmlStringOfModeledIndexPageWithNewEntry =
-//                getHtmlOfPageWithHbsWithModel("index.hbs", model);
-//        // Then body of response should be equal to new home page with changed
-//        // home page
-//        assertEquals(bodyOfResponseToPostRequestMadeToEditPage,
-//                htmlStringOfModeledIndexPageWithNewEntry);
-//    }
-//
+
+    @Test
+    public void postRequestToSaveEntryReturnsCorrectHomePage() throws Exception {
+        // Given cookie with password, dao with three test entries, no
+        // sessions, and first entry edit page
+        BlogEntry firstBlogEntry =
+                mSql2oBlogDao.findEntryById(1);
+        // When user edits entry, changing title and body
+        String bodyOfResponseToPostRequestMadeToEditPage =
+                getResponseBodyOfPostRequestWithRightPasswordCookie(
+                        "/entries/save/" + firstBlogEntry.getId() + "/"
+                        + firstBlogEntry.getSlugFromTitle(),
+                       "title=title&body=body"
+                );
+        Map<String, Object> model = new HashMap<>();
+        model.put("entries", mSql2oBlogDao.findAllEntries());
+        String htmlStringOfModeledIndexPageWithNewEntry =
+                getHtmlOfPageWithHbsWithModel("index.hbs", model);
+        // Then body of response should be equal to new home page with changed
+        // home page
+        assertEquals(bodyOfResponseToPostRequestMadeToEditPage,
+                htmlStringOfModeledIndexPageWithNewEntry);
+    }
+
 //    @Test
 //    public void removingFirstEntryReturnsHomePageWithTwoEntries()
 //            throws Exception {

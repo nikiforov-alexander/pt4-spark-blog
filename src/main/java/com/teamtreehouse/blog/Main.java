@@ -13,6 +13,7 @@ import spark.template.handlebars.HandlebarsTemplateEngine;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static spark.Spark.*;
@@ -267,18 +268,34 @@ public class Main {
             // even if user didn't change anything, because he pushed edit,
             // entry will have new creation date, the simplest way was, as I
             // thought is to remove and add new entry to DAO
+            // save old comments
+            List<Comment> listOfAssociatedComments =
+                    sSql2oEntryDao.findByEntryId(entryId);
             try {
                 sSql2oBlogDao.removeEntryById(entryId);
             } catch (DaoException daoException) {
-                // print message to us, not for user
+                // print message to us, not for user, and redirect back home
                 System.out.println(daoException.getMessage());
+                response.redirect("/");
+                return null;
             }
             try {
-                sSql2oBlogDao.addEntry(newBlogEntry);
+                // add new entry, get his new id
+                int newEntryId = sSql2oBlogDao.addEntry(newBlogEntry);
+                // add comments to database with this id, cloning involved
+                for (Comment comment : listOfAssociatedComments) {
+                    Comment commentClone =
+                            new Comment(
+                                    newEntryId,
+                                    comment.getBody(),
+                                    comment.getDate(),
+                                    comment.getAuthor());
+                    sSql2oEntryDao.addComment(commentClone);
+                }
             } catch (DaoException daoException) {
                 System.out.println(daoException.getMessage());
             }
-            // save new title and entry
+            // redirect back home
             response.redirect("/");
             return null;
         });

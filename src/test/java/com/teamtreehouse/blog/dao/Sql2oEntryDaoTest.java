@@ -70,7 +70,7 @@ public class Sql2oEntryDaoTest {
         assertEquals(2, numberOfCommentsAttachedToTestEntry);
     }
     @Test(expected = DaoException.class)
-    public void addingAreviewToAnonExistingCourseFails() throws Exception {
+    public void addingCommentToNonExistingCourseFails() throws Exception {
         Comment comment = new Comment(12, "body", "author");
         mSql2oEntryDao.addComment(comment);
     }

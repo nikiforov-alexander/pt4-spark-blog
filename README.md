@@ -169,10 +169,10 @@
     Comment. Include a link to edit the entry.
     <hr>
     Detail page `get("/entries/detail/:id/:slugFromTitle")` displays
-    title, comment, body of entry and tags. User can add comments, 
+    title, comment, body of entry.  User can add comments, 
     however author field and entry field right now are required. From
     this page user can edit entry. Link is right before entry's body.
-    Tags are shown, as hollow hyperlinks, for now. Links to add new
+    Links to add new
     entry, go home, "contact us" and "terms", are also here, just like 
     at home page
 <hr>

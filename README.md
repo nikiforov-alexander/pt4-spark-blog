@@ -159,8 +159,7 @@
     are added after creation date. Three test entries displayed on the 
     page, as asked. Link to add an entry is bound to top right button. 
     Titles of entries will redirect to detailed entry pages. 
-    Tags are hollow links right now. Later they will redirect to pages 
-    sorted by tag. Top left Spark blog logo will lead to homepage.
+    Top left Spark blog logo will lead to homepage.
     "Contact us" and "Terms" at the bottom of the page right now do not 
     lead anywhere.
 <hr>

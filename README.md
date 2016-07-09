@@ -118,16 +118,14 @@
     It has 4 methods:
     - `addEntry(BlogEntry blogEntry)`
     - `findAllEntries()`
-    - `findEntriesBySlug(String slug)`
-    - `removeEntry(BlogEntry newBlogEntry)`
+    - `findEntryById(int id)`
+    - `removeEntryById(int id)`
     
-    First three methods were given. `removeEntry` method I added in 
+    First three methods were given. `removeEntryById` method I added in 
     order to remove entry on edit page and when old entry is edited,
     old one is removed, preserving the comments, and new one is added.
-    Method `findEntriesBySlug` actually find entries by unique hashId
-    generated for each blog entry from date and title, see 
-    `setSlugUsingTitleAndCreationDate()` in [BlogEntry], 
-    and implementation in [Sql2oBlogDao]. 
+    Method `findEntryById` actually find entries by unique id
+    generated for each blog entry from date and title.
     
     Implementation of dao is called [Sql2oBlogDao]. 
 <hr>

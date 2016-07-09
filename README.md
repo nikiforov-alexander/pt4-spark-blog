@@ -51,7 +51,7 @@
 [Comment]:src/main/java/com/teamtreehouse/blog/model/Comment.java 
 [Date]:src/main/java/com/teamtreehouse/blog/model/Date.java 
 [BlogDao]:src/main/java/com/teamtreehouse/blog/dao/BlogDao.java
-[SimpleBlogEntryDAO]:src/main/java/com/teamtreehouse/blog/dao/SimpleBlogEntryDAO.java 
+[Sql2oBlogDao]:src/main/java/com/teamtreehouse/blog/dao/Sql2oBlogDao.java 
 [NotFoundException]:src/main/java/com/teamtreehouse/blog/exception/NotFoundException.java 
 ### Eclipse Installation instructions
 <hr> <a id="eclipse"></a>
@@ -128,9 +128,9 @@
     Method `findEntriesBySlug` actually find entries by unique hashId
     generated for each blog entry from date and title, see 
     `setSlugUsingTitleAndCreationDate()` in [BlogEntry], 
-    and implementation in [SimpleBlogEntryDAO]. 
+    and implementation in [Sql2oBlogDao]. 
     
-    Implementation of dao is called [SimpleBlogEntryDAO]. 
+    Implementation of dao is called [Sql2oBlogDao]. 
 <hr>
 5.  <a id="task-5"></a> 
     Add necessary routes

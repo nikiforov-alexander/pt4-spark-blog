@@ -105,8 +105,7 @@
     - [BlogEntry]
     - [Comment]
     
-    I also added [Date] class, just for convenience, that inherits 
-    `java.util.Date` class, but has two additional methods, that return
+    Both classes have two additional methods, that return
     date in right machine-readable format for html datetime element: 
     `getHtmlCreationDate()` 
     and return date in format provided in mockup files for users to see

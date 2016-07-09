@@ -135,17 +135,17 @@
     Following routes were added:
     - password page : `get("/password")` and `post("/password")`.
     - home page : `get("/")`.
-    - entries detail page: `get("/entries/detail/:hashId/:slugFromTitle")`
+    - entries detail page: `get("/entries/detail/:id/:slugFromTitle")`
     - post comments on entries detail page: 
-        `post("/entries/detail/:hashId/:slugFromTitle")`
+        `post("/entries/detail/:id/:slugFromTitle")`
     - new entry page (password-protected): with `get("/entries/new")` 
         and `post("/entries/new")`
     - edit entry page (password-protected: 
-    `get("/entries/edit/:hashId/:slugFromTitle")`
+    `get("/entries/edit/:id/:slugFromTitle")`
     - save entry on edit entry page: 
-        `post("/entries/save/:hashId/:slugFromTitle")`
+        `post("/entries/save/:id/:slugFromTitle")`
     - remove entry on edit page (made through get request) : 
-        `get("/entries/remove/:hashId/:slugFromTitle")`
+        `get("/entries/remove/:id/:slugFromTitle")`
     - when [NotFoundException] is thrown, user is redirected to: 
         `exception(ApiError.class)` not-found page
 <hr>
@@ -169,7 +169,7 @@
     Detail page should also display a comment form with Name and 
     Comment. Include a link to edit the entry.
     <hr>
-    Detail page `get("/entries/detail/:hashId/:slugFromTitle")` displays
+    Detail page `get("/entries/detail/:id/:slugFromTitle")` displays
     title, comment, body of entry and tags. User can add comments, 
     however author field and entry field right now are required. From
     this page user can edit entry. Link is right before entry's body.
@@ -215,19 +215,7 @@
     Add tags to blog entries, which enables the ability to categorize. 
     A blog entry can exist with no tags, or have multiple tags.
     <hr>
-    Blog entries can have tags. On homepage and "detail" pages 
-    tags are displayed with
-    "#" symbols, and implemented as hyperlinks, so that in future it
-    is possible to redirect user to page with list of entries, 
-    containing tags. On "edit" and "new" pages there is a text field
-    where tags can be entered. User input processed using 
-    `slugifyTagsStringAndAddToTagsMember` function in [BlogEntry]. It
-    is used in BlogEntry constructor. Tags can be any letters, numbers,
-    hyphen and underscore. String with tags entered by user is
-    processed by groups of these valid characters, and then gets 
-    slugified, to be converted to valid link, so that we can later
-    access entries with tags, like /entries/tags/{slug-from-tag}. This
-    is not yet realized in current version.
+    Not realized
 <hr>
 12. <a id="task-12"></a>
     Add the ability to delete a blog entry.

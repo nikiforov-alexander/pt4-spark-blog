@@ -146,7 +146,7 @@
         `post("/entries/save/:id/:slugFromTitle")`
     - remove entry on edit page (made through get request) : 
         `get("/entries/remove/:id/:slugFromTitle")`
-    - when [NotFoundException] is thrown, user is redirected to: 
+    - when Exceptions are thrown, user is redirected to: 
         `exception(ApiError.class)` not-found page
 <hr>
 6.  <a id="task-6"></a>
